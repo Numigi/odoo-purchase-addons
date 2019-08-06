@@ -15,4 +15,4 @@ class TestModules(TransactionCase):
 
     def test_project_stage_no_quick_create(self):
         """Project Stage No Quick Create is installed."""
-        self.assertTrue(self.modules.search([('name', '=', 'ir_attachment_name_autocomplete')]))
+        self.assertTrue(self.modules.search([('name', '=', 'purchase')]))
