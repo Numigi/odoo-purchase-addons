@@ -32,9 +32,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Login to Quay.io register
-          command: docker login quay.io -u "${QUAY_USER}" -p "${QUAY_TOKEN}"
-      - run:
           name: Get nws
           command: |
             curl -L $NWS_BIN_LOCATION > ./nws
@@ -49,8 +46,7 @@ workflows:
   version: 2
   odoo:
     jobs:
-      - tests:
-
+      - tests
       - auto-tag:
           context: nws
           requires:
