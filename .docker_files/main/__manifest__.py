@@ -12,7 +12,7 @@
     'summary': 'Install all addons required for testing.',
     'depends': [
         'purchase',
-
+	'purchase_partner_products',
     ],
     'installable': True,
 }
