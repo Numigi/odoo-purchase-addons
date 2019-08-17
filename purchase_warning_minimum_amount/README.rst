@@ -18,7 +18,7 @@ The minimum purchase amount is updated when you select or when you edit the supp
 .. image:: static/description/min_po.png
 
 Warning when confirming PO (amount untaxed < minimum purchase amount)
---------------------------------------------------------------------
+---------------------------------------------------------------------
 
 .. image:: static/description/alerte.png
 
