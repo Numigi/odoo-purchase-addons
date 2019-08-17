@@ -17,7 +17,7 @@ class PurchaseOrder(models.Model):
 
                 if not valid:
                     partner_obj = self.env['res.partner'].browse(value['partner_id'])
-                    raise exceptions.ValidationError(_("Article %s is not allowed for the supplier %s."
+                    raise exceptions.ValidationError(_("Product %s is not allowed for the supplier %s."
                                                      "\nPlease contact your manager.") %
                                                      (line.product_id.name, partner_obj.name))
         return super(PurchaseOrder, self).write(value)
@@ -52,6 +52,6 @@ class PurchaseOrderLine(models.Model):
             valid = any(s for s in product_obj.seller_ids if s.name.id == partner_id.id)
             if not valid:
                 raise exceptions.ValidationError(
-                    _("Article %s is not allowed for the supplier %s.\nPlease contact your manager.") % (
+                    _("Product %s is not allowed for the supplier %s.\nPlease contact your manager.") % (
                         product_obj.name, partner_id.name))
         return super(PurchaseOrderLine, self).create(value)
