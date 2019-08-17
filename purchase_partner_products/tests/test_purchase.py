@@ -108,3 +108,4 @@ class TestPurchaseOrder(TransactionCase):
         # Test edit PO 3 with partner not in list seller of product in line order
         with self.assertRaises(ValidationError):
             self.po_3.write({'partner_id': self.partner_id_2.id})
+
