@@ -83,7 +83,7 @@ class TestPurchaseOrder(TransactionCase):
             'notification_type': 'inbox',
             'groups_id': [(6, 0, [res_users_purchase_user.id])]})
 
-    def test_confirm_po(self):
+    def test_confirm_po_without_alert_msg(self):
         # Create purchase with amount untaxed 600
         self.po_1 = self.PurchaseOrder.create(self.po_1_vals)
         self.assertTrue(self.po_1, 'Purchase: no purchase order created')
@@ -93,6 +93,7 @@ class TestPurchaseOrder(TransactionCase):
         res_confirm = self.po_1.button_confirm()
         self.assertTrue(res_confirm, 'Purchase: The purchase order has not confirmed')
 
+    def test_confirm_po_with_alert_msg(self):
         # Create purchase with amount untaxed 400
         self.po_2 = self.PurchaseOrder.create(self.po_2_vals)
         self.assertTrue(self.po_2, 'Purchase: no purchase order created')
@@ -106,7 +107,7 @@ class TestPurchaseOrder(TransactionCase):
         res_confirm = self.alerte_1.with_context({'to_confirm': True}).apply()
         self.assertTrue(res_confirm, 'Purchase: The purchase order has not confirmed')
 
-    def test_approve_po(self):
+    def test_approve_po_without_alert_msg(self):
 
         self.env.user.company_id.write({'po_double_validation': 'two_step','po_double_validation_amount': 300.00})
 
@@ -122,6 +123,10 @@ class TestPurchaseOrder(TransactionCase):
         self.po_3.button_approve()
         self.assertEqual(self.po_3.state, 'purchase', 'PO state should be "Purchase".')
 
+    def test_approve_po_with_alert_msg(self):
+
+        self.env.user.company_id.write({'po_double_validation': 'two_step', 'po_double_validation_amount': 300.00})
+
         self.po_4 = self.PurchaseOrder.sudo(self.user_purchase_user).create(self.po_4_vals)
         self.assertTrue(self.po_4, 'Purchase: no purchase order created')
         self.assertEqual(self.po_4.amount_untaxed, 400.0)
@@ -135,4 +140,3 @@ class TestPurchaseOrder(TransactionCase):
         self.assertTrue(res_confirm, 'Purchase: The purchase order has not confirmed')
         self.po_4.button_approve()
         self.assertEqual(self.po_4.state, 'purchase', 'Purchase: PO state should be "to Purchase".')
-
