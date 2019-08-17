@@ -13,11 +13,7 @@ class PurchaseOrder(models.Model):
     def write(self, value):
         if 'partner_id' in value:
             for line in self.order_line:
-                valid = False
-                for s in line.product_id.seller_ids:
-                    if s.name.id == value['partner_id']:
-                        valid = True
-                        break
+                valid = any(s for s in line.product_id.seller_ids if s.name.id == value['partner_id'])
 
                 if not valid:
                     partner_obj = self.env['res.partner'].browse(value['partner_id'])
@@ -53,11 +49,7 @@ class PurchaseOrderLine(models.Model):
         if 'order_id' in value and 'product_id' and value:
             product_obj = self.env['product.product'].browse(value['product_id'])
             partner_id = self.env['purchase.order'].browse(value['order_id']).partner_id
-            valid = False
-            for s in product_obj.seller_ids:
-                if s.name.id == partner_id.id:
-                    valid = True
-                    break
+            valid = any(s for s in product_obj.seller_ids if s.name.id == partner_id.id)
             if not valid:
                 raise exceptions.ValidationError(
                     _("Article %s is not allowed for the supplier %s.\nPlease contact your manager.") % (
