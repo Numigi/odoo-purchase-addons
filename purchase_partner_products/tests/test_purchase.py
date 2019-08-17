@@ -48,12 +48,11 @@ class TestPurchaseOrder(TransactionCase):
                     'name': self.partner_id_2.id,
                 })]
         }
-
-    def test_create_po(self):
         # Create product
         self.product_id_1 = self.ProductProduct.create(self.product_1_vals)
         self.product_id_2 = self.ProductProduct.create(self.product_2_vals)
 
+    def test_create_po_with_partner_in_list_seller_of_product(self):
         # Test create PO 1 with partner in list seller of product in line order
         self.po_1_vals = {
             'partner_id': self.partner_id_1.id,
@@ -71,6 +70,7 @@ class TestPurchaseOrder(TransactionCase):
         self.po_1 = self.PurchaseOrder.create(self.po_1_vals)
         self.assertTrue(self.po_1, 'Purchase: no purchase order created')
 
+    def test_create_po_with_partner_not_in_list_seller_of_product(self):
         # Test create PO 2 with partner not in list seller of product in line order
         self.po_2_vals = {
             'partner_id': self.partner_id_1.id,
@@ -88,6 +88,7 @@ class TestPurchaseOrder(TransactionCase):
         with self.assertRaises(ValidationError):
             self.po_2 = self.PurchaseOrder.create(self.po_2_vals)
 
+    def test_edit_po_with_partner_not_in_list_seller_of_product(self):
         # Test create PO 3 with partner in list seller of product in line order
         self.po_3_vals = {
             'partner_id': self.partner_id_1.id,
