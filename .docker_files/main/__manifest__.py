@@ -12,7 +12,8 @@
     'summary': 'Install all addons required for testing.',
     'depends': [
         'purchase',
-	'purchase_partner_products',
+        'purchase_partner_products',
+        'purchase_warning_minimum_amount',
     ],
     'installable': True,
 }
