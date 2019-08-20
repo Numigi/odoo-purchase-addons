@@ -26,23 +26,6 @@ class PurchaseOrderLine(models.Model):
 
     _inherit = 'purchase.order.line'
 
-    product_id = fields.Many2one('product.product', string='Product',
-                                 domain=[('purchase_ok', '=', True), ('seller_ids.name', '=', 'order_id.partner_id')],
-                                 change_default=True, required=True)
-
-    @api.onchange('partner_id')
-    def _onchange_partner_id_(self):
-        domain = {}
-        if self.order_id.partner_id:
-            domain['domain'] = {
-                'product_id': [('purchase_ok', '=', True), ('seller_ids.name', '=', self.order_id.partner_id.id)]
-            }
-        else:
-            domain['domain'] = {
-                'product_id': [('purchase_ok', '=', True)]
-            }
-        return domain
-
     @api.model
     def create(self, value):
         if 'order_id' in value and 'product_id' and value:
