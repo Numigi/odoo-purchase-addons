@@ -8,32 +8,34 @@ class PurchaseOrder(models.Model):
 
     _inherit = 'purchase.order'
 
-    @api.multi
-    def write(self, value):
-        if 'partner_id' in value:
-            for line in self.order_line:
-                valid = any(s for s in line.product_id.seller_ids if s.name.id == value['partner_id'])
+    commercial_partner_id = fields.Many2one(
+        "res.partner", related="partner_id.commercial_partner_id")
 
-                if not valid:
-                    partner_obj = self.env['res.partner'].browse(value['partner_id'])
-                    raise exceptions.ValidationError(_("Product %s is not allowed for the supplier %s."
-                                                     "\nPlease contact your manager.") %
-                                                     (line.product_id.name, partner_obj.name))
-        return super(PurchaseOrder, self).write(value)
+    def _check_product_sellers(self):
+        expected_supplier = self.partner_id.commercial_partner_id
+
+        for line in self.order_line:
+            authorized_suppliers = line.mapped('product_id.seller_ids.name.commercial_partner_id')
+
+            if expected_supplier not in authorized_suppliers:
+                raise exceptions.ValidationError(_(
+                    "The product {product} is not allowed for the supplier {supplier}.\n"
+                    "Please contact your manager."
+                ).format(
+                    product=line.product_id.display_name,
+                    supplier=expected_supplier.display_name,
+                ))
+
+    @api.multi
+    def button_confirm(self):
+        for order in self:
+            order._check_product_sellers()
+        return super().button_confirm()
 
 
 class PurchaseOrderLine(models.Model):
 
     _inherit = 'purchase.order.line'
 
-    @api.model
-    def create(self, value):
-        if 'order_id' in value and 'product_id' and value:
-            product_obj = self.env['product.product'].browse(value['product_id'])
-            partner_id = self.env['purchase.order'].browse(value['order_id']).partner_id
-            valid = any(s for s in product_obj.seller_ids if s.name.id == partner_id.id)
-            if not valid:
-                raise exceptions.ValidationError(
-                    _("Product %s is not allowed for the supplier %s.\nPlease contact your manager.") % (
-                        product_obj.name, partner_id.name))
-        return super(PurchaseOrderLine, self).create(value)
+    commercial_partner_id = fields.Many2one(
+        "res.partner", related="order_id.commercial_partner_id")

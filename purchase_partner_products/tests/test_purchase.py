@@ -1,111 +1,88 @@
 # © 2019 Numigi (tm) and all its contributors (https://bit.ly/numigiens)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo.tests.common import TransactionCase
-
+import pytest
 from datetime import datetime
-
-from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
 from odoo.exceptions import ValidationError
+from odoo.tests.common import SavepointCase
 
 
-class TestPurchaseOrder(TransactionCase):
+class TestPurchaseOrder(SavepointCase):
 
-    def setUp(self):
-        super(TestPurchaseOrder, self).setUp()
-        # Useful models
-        self.PurchaseOrder = self.env['purchase.order']
-        self.PurchaseOrderLine = self.env['purchase.order.line']
-        self.ProductProduct = self.env['product.product']
-        self.partner_id_1 = self.env.ref('base.res_partner_1')
-        self.partner_id_2 = self.env.ref('base.res_partner_3')
-        self.product_categ_id = self.env.ref('product.product_category_5')
-        self.uom_unit = self.env.ref('uom.product_uom_unit')
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.partner_1 = cls.env['res.partner'].create({
+            'name': 'My Partner Company 1',
+            'supplier': True,
+            'is_company': True,
+        })
+        cls.contact_1 = cls.env['res.partner'].create({
+            'name': 'My Contact 1',
+            'supplier': True,
+            'is_company': False,
+            'parent_id': cls.partner_1.id,
+        })
 
-        self.product_1_vals = {
-            'name': 'Acier Lac 1.2',
-            'categ_id': self.product_categ_id.id,
-            'type': 'consu',
-            'uom_id': self.uom_unit.id,
-            'uom_po_id': self.uom_unit.id,
-            'default_code': 'ACIERLC2',
-            'seller_ids': [
-            (0, 0, {
-                'name': self.partner_id_1.id,
-            })]
-        }
+        cls.partner_2 = cls.env['res.partner'].create({
+            'name': 'My Partner Company 2',
+            'supplier': True,
+            'is_company': True,
+        })
 
-        self.product_2_vals = {
+        cls.product_categ = cls.env.ref('product.product_category_5')
+        cls.uom_unit = cls.env.ref('uom.product_uom_unit')
+
+        cls.product_1 = cls.env['product.product'].create(cls._get_product_vals(cls.partner_1))
+        cls.product_2 = cls.env['product.product'].create(cls._get_product_vals(cls.partner_2))
+
+        cls.order = cls.env['purchase.order'].create({
+            'partner_id': cls.partner_1.id,
+            'order_line': [],
+        })
+
+    @classmethod
+    def _get_product_vals(cls, suppliers):
+        return {
             'name': 'Acier Lac 3.4',
-            'categ_id': self.product_categ_id.id,
+            'categ_id': cls.product_categ.id,
             'type': 'consu',
-            'uom_id': self.uom_unit.id,
-            'uom_po_id': self.uom_unit.id,
+            'uom_id': cls.uom_unit.id,
+            'uom_po_id': cls.uom_unit.id,
             'default_code': 'ACIERLC3',
             'seller_ids': [
-                (0, 0, {
-                    'name': self.partner_id_2.id,
-                })]
-        }
-        # Create product
-        self.product_id_1 = self.ProductProduct.create(self.product_1_vals)
-        self.product_id_2 = self.ProductProduct.create(self.product_2_vals)
-
-    def test_create_po_with_partner_in_list_seller_of_product(self):
-        # Test create PO 1 with partner in list seller of product in line order
-        self.po_1_vals = {
-            'partner_id': self.partner_id_1.id,
-            'order_line': [
-                (0, 0, {
-                    'name': self.product_id_1.name,
-                    'product_id': self.product_id_1.id,
-                    'product_qty': 6.0,
-                    'product_uom': self.product_id_1.uom_po_id.id,
-                    'price_unit': 100.0,
-                    'date_planned': datetime.today().strftime(DEFAULT_SERVER_DATETIME_FORMAT),
-                })],
+                (0, 0, {'name': p.id}) for p in suppliers
+            ]
         }
 
-        self.po_1 = self.PurchaseOrder.create(self.po_1_vals)
-        self.assertTrue(self.po_1, 'Purchase: no purchase order created')
-
-    def test_create_po_with_partner_not_in_list_seller_of_product(self):
-        # Test create PO 2 with partner not in list seller of product in line order
-        self.po_2_vals = {
-            'partner_id': self.partner_id_1.id,
-            'order_line': [
-                (0, 0, {
-                    'name': self.product_id_2.name,
-                    'product_id': self.product_id_2.id,
-                    'product_qty': 6.0,
-                    'product_uom': self.product_id_2.uom_po_id.id,
-                    'price_unit': 100.0,
-                    'date_planned': datetime.today().strftime(DEFAULT_SERVER_DATETIME_FORMAT),
-                })],
+    @classmethod
+    def _get_po_line_vals(cls, product):
+        return {
+            'name': product.name,
+            'product_id': product.id,
+            'product_qty': 6.0,
+            'product_uom': product.uom_po_id.id,
+            'price_unit': 100.0,
+            'date_planned': datetime.now(),
         }
 
-        with self.assertRaises(ValidationError):
-            self.po_2 = self.PurchaseOrder.create(self.po_2_vals)
+    def test_if_one_product_with_same_partner__error_not_raised(self):
+        self.order.write({'order_line': [(0, 0, self._get_po_line_vals(self.product_1))]})
+        self.order.button_confirm()
 
-    def test_edit_po_with_partner_not_in_list_seller_of_product(self):
-        # Test create PO 3 with partner in list seller of product in line order
-        self.po_3_vals = {
-            'partner_id': self.partner_id_1.id,
-            'order_line': [
-                (0, 0, {
-                    'name': self.product_id_1.name,
-                    'product_id': self.product_id_1.id,
-                    'product_qty': 6.0,
-                    'product_uom': self.product_id_1.uom_po_id.id,
-                    'price_unit': 100.0,
-                    'date_planned': datetime.today().strftime(DEFAULT_SERVER_DATETIME_FORMAT),
-                })],
-        }
+    def test_if_two_products_with_same_partner__error_not_raised(self):
+        self.order.write({'order_line': [
+            (0, 0, self._get_po_line_vals(self.product_1)),
+            (0, 0, self._get_po_line_vals(self.product_1)),
+        ]})
+        self.order.button_confirm()
 
-        self.po_3 = self.PurchaseOrder.create(self.po_3_vals)
-        self.assertTrue(self.po_3, 'Purchase: no purchase order created')
+    def test_if_one_product_with_child_partner__error_not_raised(self):
+        self.order.write({'order_line': [(0, 0, self._get_po_line_vals(self.product_1))]})
+        self.order.partner_id = self.contact_1
+        self.order.button_confirm()
 
-        # Test edit PO 3 with partner not in list seller of product in line order
-        with self.assertRaises(ValidationError):
-            self.po_3.write({'partner_id': self.partner_id_2.id})
-
+    def test_if_one_product_unrelated_partner__error_raised(self):
+        self.order.write({'order_line': [(0, 0, self._get_po_line_vals(self.product_2))]})
+        with pytest.raises(ValidationError):
+            self.order.button_confirm()
