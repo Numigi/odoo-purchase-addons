@@ -1,15 +1,30 @@
-Purchase partner products
+Purchase Partner Products
 =========================
-This module allows restriction selection on products. When an user create a PO for a supplier, he can only select products sold by this supplier. This information is set by the user in the product form view (seller's list)
+This module restricts the selection of products on purchase orders based on the selected supplier.
 
+Usage
+-----
+As member of ``Purchase / Manager``, I go to the form view of a product.
 
-Add Supplier in the product's seller list 
------------------------------------------
+I add a supplier to the product.
 
-In the form view of the product, a user in group purchase manager or purchase user, can add a supplier in the seller's list
+.. image:: static/description/product_form.png
 
-.. image:: static/description/add_seller.png
+As member of ``Purchase / User``, I create a request for quotation and select a contact.
 
+.. image:: static/description/new_purchase_order.png
+
+I notice that the list of available products is filtered.
+Only the products under the commercial entity of the selected contact are available.
+
+.. image:: static/description/purchase_order_product_list_filtered.png
+
+Validation Constraint
+---------------------
+When the order is confirmed, if the supplier does not match every selected product,
+a blocking error message is displayed.
+
+.. image:: static/description/purchase_order_error_message.png
 
 Contributors
 ------------

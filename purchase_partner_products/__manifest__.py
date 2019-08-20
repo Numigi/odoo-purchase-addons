@@ -2,28 +2,16 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 {
-    'name': "Purchase partner products",
-
-    'summary': """
-        Restriction selection articles on PO""",
-
+    'name': "Purchase Partner Products",
+    'summary': "Restrict product selection on purchase orders",
     'author': "Numigi",
     'maintainer': "Numigi",
     'website': "https://bit.ly/numigi-com",
     'licence': "AGPL-3",
-
-    'version': '1.1',
-
-    # any module necessary for this one to work correctly
+    'version': '1.2.0',
     'depends': ['purchase'],
-
-    # always loaded
     'data': [
         "views/purchase_view.xml",
-
-    ],
-    # only loaded in demonstration mode
-    'demo': [
     ],
     'installable': True,
 }

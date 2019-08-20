@@ -1,33 +1,27 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* purchase_partner_products
+# 	* purchase_partner_products
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-07-30 12:10+0000\n"
-"PO-Revision-Date: 2019-07-30 12:10+0000\n"
+"POT-Creation-Date: 2019-08-20 16:34+0000\n"
+"PO-Revision-Date: 2019-08-20 12:36-0400\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
+"Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: \n"
+"X-Generator: Poedit 2.0.6\n"
 
 #. module: purchase_partner_products
-#: code:addons/purchase_partner_products/models/purchase_order.py:24
-#: code:addons/purchase_partner_products/models/purchase_order.py:63
-#, python-format
-msgid "Article %s is not allowed for the supplier %s.\n"
-"Please contact your manager."
-msgstr "L'article %s n'est pas autorisé pour le fournisseur %s.\n"
-"Veuillez contacter votre gestionnaire."
-
-#. module: purchase_partner_products
-#: model:ir.model.fields,field_description:purchase_partner_products.field_purchase_order_line__product_id
-msgid "Product"
-msgstr "Article"
+#: model:ir.model.fields,field_description:purchase_partner_products.field_purchase_order__commercial_partner_id
+#: model:ir.model.fields,field_description:purchase_partner_products.field_purchase_order_line__commercial_partner_id
+msgid "Commercial Entity"
+msgstr ""
 
 #. module: purchase_partner_products
 #: model:ir.model,name:purchase_partner_products.model_purchase_order
@@ -38,3 +32,16 @@ msgstr "Commande fournisseur"
 #: model:ir.model,name:purchase_partner_products.model_purchase_order_line
 msgid "Purchase Order Line"
 msgstr "Ligne de commande d'achat"
+
+#. module: purchase_partner_products
+#: code:addons/purchase_partner_products/models/purchase_order.py:21
+#, python-format
+msgid ""
+"The product {product} is not allowed for the supplier {supplier}.\n"
+"Please contact your manager."
+msgstr ""
+"L'article {product} n'est pas autorisé pour le fournisseur {supplier}.\n"
+"Veuillez contacter votre gestionnaire."
+
+#~ msgid "Product"
+#~ msgstr "Article"
