@@ -66,23 +66,26 @@ class TestPurchaseOrder(SavepointCase):
             'date_planned': datetime.now(),
         }
 
+    def confirm_order(self):
+        self.order.with_context(force_apply_purchase_partner_products=True).button_confirm()
+
     def test_if_one_product_with_same_partner__error_not_raised(self):
         self.order.write({'order_line': [(0, 0, self._get_po_line_vals(self.product_1))]})
-        self.order.button_confirm()
+        self.confirm_order()
 
     def test_if_two_products_with_same_partner__error_not_raised(self):
         self.order.write({'order_line': [
             (0, 0, self._get_po_line_vals(self.product_1)),
             (0, 0, self._get_po_line_vals(self.product_1)),
         ]})
-        self.order.button_confirm()
+        self.confirm_order()
 
     def test_if_one_product_with_child_partner__error_not_raised(self):
         self.order.write({'order_line': [(0, 0, self._get_po_line_vals(self.product_1))]})
         self.order.partner_id = self.contact_1
-        self.order.button_confirm()
+        self.confirm_order()
 
     def test_if_one_product_unrelated_partner__error_raised(self):
         self.order.write({'order_line': [(0, 0, self._get_po_line_vals(self.product_2))]})
         with pytest.raises(ValidationError):
-            self.order.button_confirm()
+            self.confirm_order()
