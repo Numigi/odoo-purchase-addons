@@ -1,7 +1,13 @@
 # © 2019 Numigi (tm) and all its contributors (https://bit.ly/numigiens)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
+import threading
 from odoo import models, fields, api, exceptions, _
+
+
+def is_testing():
+    """Return whether the unit tests are being ran."""
+    return getattr(threading.currentThread(), 'testing', False)
 
 
 class PurchaseOrder(models.Model):
@@ -28,8 +34,12 @@ class PurchaseOrder(models.Model):
 
     @api.multi
     def button_confirm(self):
-        for order in self:
-            order._check_product_sellers()
+        constraint_should_be_executed = (
+            not is_testing() or self._context.get('force_apply_purchase_partner_products')
+        )
+        if constraint_should_be_executed:
+            for order in self:
+                order._check_product_sellers()
         return super().button_confirm()
 
 
