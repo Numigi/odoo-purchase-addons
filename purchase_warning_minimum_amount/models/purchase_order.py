@@ -37,11 +37,11 @@ class PurchaseOrder(models.Model):
         return super(PurchaseOrder, self).button_confirm()
 
     @api.multi
-    def button_approve(self):
+    def button_approve(self, force=False):
         context = self._context.copy()
         if context.get('confirm_order', False):
-            return super(PurchaseOrder, self).button_approve()
+            return super(PurchaseOrder, self).button_approve(force)
         if self.amount_untaxed < self.min_purchase_amount:
             context.update({'to_approve': True})
             return self.display_alert_wizard(context)
-        return super(PurchaseOrder, self).button_approve()
+        return super(PurchaseOrder, self).button_approve(force)

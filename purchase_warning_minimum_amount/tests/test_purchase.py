@@ -107,7 +107,6 @@ class TestPurchaseOrder(TransactionCase):
         self.assertTrue(res_confirm, 'Purchase: The purchase order has not confirmed')
 
     def test_approve_po_without_alert_msg(self):
-
         self.env.user.company_id.write({'po_double_validation': 'two_step','po_double_validation_amount': 300.00})
 
         self.po_3 = self.PurchaseOrder.sudo(self.user_purchase_user).create(self.po_3_vals)
@@ -118,12 +117,10 @@ class TestPurchaseOrder(TransactionCase):
         self.assertTrue(res_confirm, 'Purchase: The purchase order has not confirmed')
         self.assertEqual(self.po_3.state, 'to approve', 'Purchase: PO state should be "to approve".')
 
-
-        self.po_3.button_approve()
+        self.po_3.button_approve(force=False)
         self.assertEqual(self.po_3.state, 'purchase', 'PO state should be "Purchase".')
 
     def test_approve_po_with_alert_msg(self):
-
         self.env.user.company_id.write({'po_double_validation': 'two_step', 'po_double_validation_amount': 300.00})
 
         self.po_4 = self.PurchaseOrder.sudo(self.user_purchase_user).create(self.po_4_vals)
@@ -137,5 +134,5 @@ class TestPurchaseOrder(TransactionCase):
         self.alerte_2 = self.WizardAlert.create({'order_id': self.po_4.id})
         res_confirm = self.alerte_2.with_context({'to_confirm': True}).apply()
         self.assertTrue(res_confirm, 'Purchase: The purchase order has not confirmed')
-        self.po_4.button_approve()
+        self.po_4.button_approve(force=False)
         self.assertEqual(self.po_4.state, 'purchase', 'Purchase: PO state should be "to Purchase".')
