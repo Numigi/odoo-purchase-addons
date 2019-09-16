@@ -25,6 +25,10 @@ class ProductTemplate(models.Model):
     def _onchange_category_set_consignment(self):
         _propagate_consignment_from_category(self)
 
+    @api.constrains('consignment')
+    def _check_single_consigned_vendor_if_consigned(self):
+        self.mapped('product_variant_ids')._check_single_consigned_vendor_if_consigned()
+
 
 class Product(models.Model):
 
@@ -45,28 +49,32 @@ class Product(models.Model):
                 ' * {vendors}'
             ).format(
                 product=self.display_name,
-                vendors='\n *'.join(vendors.mapped('display_name'))
+                vendors='\n * '.join(vendors.mapped('display_name'))
             ))
+
+    @api.constrains('consignment')
+    def _check_single_consigned_vendor_if_consigned(self):
+        products_with_consignment = self.filtered(lambda p: p.consignment)
+        for product in products_with_consignment:
+            product._check_single_consignment_vendor()
 
 
 class ProductSupplierInfo(models.Model):
 
     _inherit = 'product.supplierinfo'
 
-    def _check_consignment_vendor_limit(self):
+    def _check_single_consigned_vendor(self):
         products = get_products_from_supplier_info(self)
-        consigned_products = products.filtered(lambda p: p.consignment)
-        for product in consigned_products:
-            product._check_single_consignment_vendor()
+        products._check_single_consigned_vendor_if_consigned()
 
     @api.model_create_multi
     def create(self, vals_list):
         res = super().create(vals_list)
-        res._check_consignment_vendor_limit()
+        res._check_single_consigned_vendor()
         return res
 
     @api.multi
     def write(self, vals):
         res = super().write(vals)
-        self._check_consignment_vendor_limit()
+        self._check_single_consigned_vendor()
         return res
