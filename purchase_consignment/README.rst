@@ -5,7 +5,7 @@ This module improves the usability of consignment in Odoo.
 Context
 -------
 In vanilla Odoo, as of version ``12.0``, managing consignment is error prone.
-You must manually define the product owner on each received item in a reception picking.
+You must manually define the owner of a product on the receipt order.
 
 .. image:: static/description/vanilla_odoo_consignment.png
 
@@ -34,6 +34,24 @@ In the ``Purchase`` tab, I select the supplier for this product.
     Because ``Consignment`` is checked, I can not select more than one supplier (commercial partner).
     However, I can enter more than one address under the same commercial partner.
 
+.. image:: static/description/product_form_purchase_tab.png
+
+Configuration By Category
+~~~~~~~~~~~~~~~~~~~~~~~~~
+It is also possible to configure consignment per product category.
+
+On the form view of a product category, I notice a new checkbox ``Consignment``. I check the box.
+
+.. image:: static/description/product_category_form_consignment.png
+
+When checking or unchecking this box, the value of the field is propagated to all products directly under this category.
+
+When setting/changing the category on a product, the value is also propagated from the category.
+
+..
+
+	However, this propagation will not be done if you do a mass edition of products to change the category.
+
 Usage
 -----
 As member of the group ``Purchase / User``, I go to the form view of a purchase order.
@@ -42,15 +60,13 @@ I select my supplier and the consigned product.
 
 .. image:: static/description/purchase_order_draft.png
 
-I confirm the purchase order.
+I confirm the purchase order, then I go to the reception picking.
 
 .. image:: static/description/purchase_order_confirmed.png
 
-I go to the reception picking.
-
 I notice that the owner was automatically set on the stock move.
 
-.. image:: static/description/reception_picking_with_owner.png
+.. image:: static/description/receipt_order_with_owner.png
 
 Constraint on PO
 ----------------

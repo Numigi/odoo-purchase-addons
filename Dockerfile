@@ -1,8 +1,16 @@
 FROM quay.io/numigi/odoo-public:12.latest
 LABEL maintainer="contact@numigi.com"
 
+USER root
+
+ARG GIT_TOKEN
+
+COPY .docker_files/test-requirements.txt .
+RUN pip3 install -r ./test-requirements.txt && rm ./test-requirements.txt
+
 USER odoo
 
+COPY purchase_consignment /mnt/extra-addons/purchase_consignment
 COPY purchase_partner_products /mnt/extra-addons/purchase_partner_products
 COPY purchase_warning_minimum_amount /mnt/extra-addons/purchase_warning_minimum_amount
 
