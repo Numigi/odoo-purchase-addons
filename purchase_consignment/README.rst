@@ -2,6 +2,8 @@ Purchase Consignment
 ====================
 This module improves the usability of consignment in Odoo.
 
+.. contents:: Table of Contents
+
 Context
 -------
 In vanilla Odoo, as of version ``12.0``, managing consignment is error prone.
