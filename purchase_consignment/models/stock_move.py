@@ -1,9 +1,7 @@
 # © 2019 Numigi (tm) and all its contributors (https://bit.ly/numigiens)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import api, models, _
-from odoo.exceptions import ValidationError
-from .common import get_supplier_info_from_product
+from odoo import api, models
 
 
 class StockMove(models.Model):
