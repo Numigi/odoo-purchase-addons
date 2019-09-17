@@ -3,7 +3,6 @@ LABEL maintainer="contact@numigi.com"
 
 USER root
 
-ARG GIT_TOKEN
 
 COPY .docker_files/test-requirements.txt .
 RUN pip3 install -r ./test-requirements.txt && rm ./test-requirements.txt
