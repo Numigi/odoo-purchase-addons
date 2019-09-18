@@ -13,6 +13,7 @@
     'depends': [
         'purchase',
         'purchase_consignment',
+        'purchase_consignment_inventory',
         'purchase_partner_products',
         'purchase_warning_minimum_amount',
     ],
