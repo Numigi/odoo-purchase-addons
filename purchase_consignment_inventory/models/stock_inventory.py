@@ -58,7 +58,7 @@ class StockInventory(models.Model):
 
         result = []
 
-        for group, quants in groupby(all_quants, _quant_group_by):
+        for dummy, quants in groupby(all_quants, _quant_group_by):
             quant_list = list(quants)
             quantity = sum(q.quantity for q in quant_list)
             first_quant = quant_list[0]
