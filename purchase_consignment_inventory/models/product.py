@@ -1,7 +1,7 @@
 # © 2019 Numigi (tm) and all its contributors (https://bit.ly/numigiens)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import api, fields, models
+from odoo import api, models
 from odoo.addons.purchase_consignment.models.common import get_products_from_supplier_info
 from odoo.osv.expression import AND
 
