@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="supplier_invoice_form_with_receipt_picking_id" model="ir.ui.view">
+        <field name="name">Supplier Invoice Form: add field to select receipt picking</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="purchase.view_invoice_supplier_purchase_form"/>
+        <field name="arch" type="xml">
+            <field name="vendor_bill_purchase_id" position="after">
+                <field name="receipt_picking_id"
+                    attrs="{'invisible': [('state', '!=', 'draft')]}"
+                    class="oe_edit_only"
+                    domain="[
+                        '&amp;',
+                        ('state', '=', 'done'),
+                        '&amp;',
+                        ('partner_id', 'child_of', commercial_partner_id),
+                        '|',
+                        ('location_id.usage', '=', 'supplier'),
+                        ('location_dest_id.usage', '=', 'supplier'),
+                    ]"
+                    options="{'no_create': True, 'no_open': True}"
+                    context="{'show_picking_supplier_reference': True}"
+                    />
+            </field>
+        </field>
+    </record>
+
+    <record id="supplier_invoice_form_with_receipt_move_id" model="ir.ui.view">
+        <field name="name">Supplier Invoice: add field receipt_move_id to invoice lines</field>
+        <field name="model">account.invoice</field>
+        <field name="inherit_id" ref="purchase.view_invoice_supplier_purchase_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='invoice_line_ids']/tree" position="inside">
+                <field name="receipt_move_id" invisible="1"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="invoice_line_form_with_receipt_move_id" model="ir.ui.view">
+        <field name="name">Supplier Invoice Line Form: add receipt_picking_id</field>
+        <field name="model">account.invoice.line</field>
+        <field name="inherit_id" ref="purchase.view_invoice_line_form_inherit_purchase"/>
+        <field name="arch" type="xml">
+            <field name="purchase_id" position="after">
+                <field name="receipt_picking_id" readonly="1" invisible="context.get('type') in ('out_invoice', 'out_refund')"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>
