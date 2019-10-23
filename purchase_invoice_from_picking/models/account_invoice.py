@@ -2,12 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from odoo import api, fields, models
-from odoo.addons import decimal_precision as dp
 from odoo.tools import float_compare
-
-
-def _get_po_line_precision_digits(env):
-    return dp.get_precision('Product Unit of Measure')(env.cr)[1]
 
 
 def get_move_qty_in_po_line_uom(move: 'stock.move', po_line: 'purchase.order.line'):
