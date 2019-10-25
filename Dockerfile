@@ -10,6 +10,7 @@ RUN pip3 install -r ./test-requirements.txt && rm ./test-requirements.txt
 USER odoo
 
 COPY purchase_consignment /mnt/extra-addons/purchase_consignment
+COPY purchase_consignment_inventory /mnt/extra-addons/purchase_consignment_inventory
 COPY purchase_invoice_from_picking /mnt/extra-addons/purchase_invoice_from_picking
 COPY purchase_invoice_empty_lines /mnt/extra-addons/purchase_invoice_empty_lines
 COPY purchase_partner_products /mnt/extra-addons/purchase_partner_products
