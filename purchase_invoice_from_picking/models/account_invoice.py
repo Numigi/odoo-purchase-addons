@@ -21,7 +21,7 @@ def get_move_qty_in_po_line_uom(move: 'stock.move', po_line: 'purchase.order.lin
 
     The precision taken to compare the quantities is the inventory precision
     minus one. The reason is the core of Odoo contains multiple minor errors
-    in rounding operations. Therefore, 10.002 sould be the same as 10.000
+    in rounding operations. Therefore, 10.002 should be the same as 10.000
     """
     moved_qty = move.product_uom._compute_quantity(
         move.product_uom_qty, po_line.product_uom,
