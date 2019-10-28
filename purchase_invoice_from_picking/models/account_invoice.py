@@ -33,9 +33,6 @@ def get_move_qty_in_po_line_uom(move: 'stock.move', po_line: 'purchase.order.lin
         moved_qty, po_line.product_qty, precision_digits=precision) == 0
 
     return po_line.product_qty if is_full_qty else moved_qty
-        return po_line.product_qty
-    else:
-        return moved_qty
 
 
 class AccountInvoice(models.Model):
