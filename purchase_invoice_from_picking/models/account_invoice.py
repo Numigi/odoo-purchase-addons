@@ -32,7 +32,7 @@ def get_move_qty_in_po_line_uom(move: 'stock.move', po_line: 'purchase.order.lin
     is_full_qty = float_compare(
         moved_qty, po_line.product_qty, precision_digits=precision) == 0
 
-    if is_full_qty:
+    return po_line.product_qty if is_full_qty else moved_qty
         return po_line.product_qty
     else:
         return moved_qty
