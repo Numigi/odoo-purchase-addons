@@ -149,6 +149,14 @@ class TestInvoiceFromFullReceipt(InvoiceFromPickingCase):
 
         assert self.order.name in self.invoice.origin
 
+    def test_if_picking_selected_twice__no_duplicate_lines_added(self):
+        self.invoice.receipt_picking_id = self.picking
+        self.invoice.onchange_receipt_picking_id()
+        self.invoice.receipt_picking_id = self.picking
+        self.invoice.onchange_receipt_picking_id()
+        lines = self.invoice.invoice_line_ids
+        assert len(lines) == 2
+
 
 class TestInvoiceFromPartialReceipt(InvoiceFromPickingCase):
 
