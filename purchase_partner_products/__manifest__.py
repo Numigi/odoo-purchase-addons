@@ -8,8 +8,11 @@
     'maintainer': "Numigi",
     'website': "https://bit.ly/numigi-com",
     'licence': "AGPL-3",
-    'version': '1.2.0',
-    'depends': ['purchase'],
+    'version': '1.2.1',
+    'depends': [
+        'purchase',
+        'product_supplier_info_helpers',
+    ],
     'data': [
         "views/purchase_view.xml",
     ],

@@ -3,7 +3,9 @@
 
 from odoo import api, models, _
 from odoo.exceptions import ValidationError
-from .common import get_supplier_info_from_product
+from odoo.addons.product_supplier_info_helpers.helpers import (
+    get_supplier_info_from_product,
+)
 
 
 class PurchaseOrder(models.Model):

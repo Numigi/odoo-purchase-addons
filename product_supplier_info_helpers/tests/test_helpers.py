@@ -2,13 +2,13 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from odoo.tests.common import SavepointCase
-from ..models.common import (
+from ..helpers import (
     get_products_from_supplier_info,
     get_supplier_info_from_product,
 )
 
 
-class TestSupplierInfo(SavepointCase):
+class TestSupplierInfoHelpers(SavepointCase):
     """Test the tools to abstract the relation between products and supplier info.
 
     The relation between a product and its supplier info in Odoo is complex.

@@ -3,6 +3,7 @@
 
 import threading
 from odoo import models, fields, api, exceptions, _
+from odoo.addons.product_supplier_info_helpers.helpers import get_supplier_info_from_product
 
 
 def is_testing():
@@ -21,7 +22,8 @@ class PurchaseOrder(models.Model):
         expected_supplier = self.partner_id.commercial_partner_id
 
         for line in self.order_line:
-            authorized_suppliers = line.mapped('product_id.seller_ids.name.commercial_partner_id')
+            supplier_info = get_supplier_info_from_product(line.product_id)
+            authorized_suppliers = supplier_info.mapped('name.commercial_partner_id')
 
             if expected_supplier not in authorized_suppliers:
                 raise exceptions.ValidationError(_(
