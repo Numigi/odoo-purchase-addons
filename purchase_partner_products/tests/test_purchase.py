@@ -89,3 +89,23 @@ class TestPurchaseOrder(SavepointCase):
         self.order.write({'order_line': [(0, 0, self._get_po_line_vals(self.product_2))]})
         with pytest.raises(ValidationError):
             self.confirm_order()
+
+    def test_if_partner_defined_on_variant__error_raised(self):
+        template = self.product_1.product_tmpl_id
+
+        self.product_1.copy({'product_tmpl_id': template.id})
+        template.seller_ids.product_id = self.product_1
+
+        self.order.write({'order_line': [(0, 0, self._get_po_line_vals(self.product_1))]})
+        self.confirm_order()
+
+    def test_if_partner_defined_on_other_variant__error_raised(self):
+        template = self.product_1.product_tmpl_id
+
+        other_variant = self.product_1.copy({'product_tmpl_id': template.id})
+        template.seller_ids.product_id = other_variant
+
+        self.order.write({'order_line': [(0, 0, self._get_po_line_vals(self.product_1))]})
+
+        with pytest.raises(ValidationError):
+            self.confirm_order()

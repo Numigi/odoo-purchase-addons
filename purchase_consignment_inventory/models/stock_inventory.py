@@ -3,7 +3,9 @@
 
 from itertools import groupby
 from odoo import api, fields, models, _
-from odoo.addons.purchase_consignment.models.common import get_products_from_supplier_info
+from odoo.addons.product_supplier_info_helpers.helpers import (
+    get_products_from_supplier_info,
+)
 
 CONSIGNMENT_FILTER_KEY = 'consignment'
 

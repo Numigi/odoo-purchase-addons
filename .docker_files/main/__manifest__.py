@@ -11,11 +11,11 @@
     'category': 'Other',
     'summary': 'Install all addons required for testing.',
     'depends': [
-        'purchase',
+        'product_supplier_info_helpers',
         'purchase_consignment',
         'purchase_consignment_inventory',
-        'purchase_invoice_from_picking',
         'purchase_invoice_empty_lines',
+        'purchase_invoice_from_picking',
         'purchase_partner_products',
         'purchase_warning_minimum_amount',
     ],

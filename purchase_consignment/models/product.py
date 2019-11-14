@@ -3,7 +3,10 @@
 
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
-from .common import get_products_from_supplier_info, get_supplier_info_from_product
+from odoo.addons.product_supplier_info_helpers.helpers import (
+    get_products_from_supplier_info,
+    get_supplier_info_from_product,
+)
 
 
 def _propagate_consignment_from_category(product):
