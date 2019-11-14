@@ -67,7 +67,11 @@ class AccountInvoice(models.Model):
         return new_line
 
     def _prepare_supplier_invoice_lines_from_receipt(self):
-        for move in self.receipt_picking_id.move_lines:
+        stock_moves_already_added = self.mapped('invoice_line_ids.receipt_move_id')
+        stock_moves_to_add = self.receipt_picking_id.move_lines.filtered(
+            lambda m: m not in stock_moves_already_added
+        )
+        for move in stock_moves_to_add:
             self._prepare_supplier_invoice_line_from_stock_move(move)
 
     @api.onchange('receipt_picking_id')
