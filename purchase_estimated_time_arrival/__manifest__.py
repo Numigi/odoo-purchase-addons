@@ -2,8 +2,8 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 {
-    'name': "Purchase Invoice From Picking",
-    'summary': "Create supplier bill from a receipt order",
+    'name': "Purchase Estimated Time of Arrival (ETA)",
+    'summary': "Compute the estimated time of arrival of purchased products",
     'author': "Numigi",
     'maintainer': "Numigi",
     'website': "https://bit.ly/numigi-com",
@@ -11,8 +11,11 @@
     'version': '1.0.0',
     'depends': ['purchase_stock'],
     'data': [
-        "views/account_invoice.xml",
-        "views/stock_picking.xml",
+        "views/product.xml",
+        "views/purchase_order.xml",
+        "views/res_config_settings.xml",
+        "views/stock_arrival_time.xml",
+        "security/ir.model.access.csv",
     ],
     'installable': True,
 }

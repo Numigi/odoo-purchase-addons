@@ -1,5 +1,5 @@
-Purchase Estimated Time Arrival
-===============================
+Purchase Estimated Time of Arrival (ETA)
+========================================
 This module computes estimated time of arrival (ETA) from purchase receipts.
 
 .. contents:: Table of Contents
@@ -24,27 +24,28 @@ I notice a new smart button ``ETA``.
 
 ..
 
-	The number on the button indicates the average ETA for this product.
+    The number on the button indicates the average ETA for this product.
 
 When I click on the button, I see the list of ETA items computed for this product.
 
-Global ETA List
----------------
-As member of ``Purchase / Manager``, I go to ``Purchase / Reporting / ETA``.
-
-I see the global list of ETA (for every product).
-
-.. image:: static/description/global_eta_list.png
+.. image:: static/description/product_eta_details.png
 
 Computation of ETA
 ------------------
 When a product is received from a supplier (meaning that the receipt picking is processed),
 a new ETA entry is generated.
 
+The number of days for this entry is computed as follow:
+
+..
+
+    ETA Days = Receipt Date - Purchase Order Date
+
 If a product is received partially, and a backorder is created, an ETA will be created
 for both the initial receipt and the second receipt.
 
-The average ETA does not 
+The average ETA is not weighted based on the received quantities.
+Whether one or 100 items is received will not impact the computation.
 
 Contributors
 ------------
