@@ -12,6 +12,7 @@ USER odoo
 COPY product_supplier_info_helpers /mnt/extra-addons/product_supplier_info_helpers
 COPY purchase_consignment /mnt/extra-addons/purchase_consignment
 COPY purchase_consignment_inventory /mnt/extra-addons/purchase_consignment_inventory
+COPY purchase_estimated_time_arrival /mnt/extra-addons/purchase_estimated_time_arrival
 COPY purchase_invoice_empty_lines /mnt/extra-addons/purchase_invoice_empty_lines
 COPY purchase_invoice_from_picking /mnt/extra-addons/purchase_invoice_from_picking
 COPY purchase_partner_products /mnt/extra-addons/purchase_partner_products
