@@ -2,24 +2,19 @@
 <odoo>
 
     <record id="purchase_order_form_with_product_domain" model="ir.ui.view">
-        <field name="name">Purchase Order: add domain to constrain products of the supplier</field>
+        <field name="name">Purchase Order: add search filter to constrain products of the supplier</field>
         <field name="model">purchase.order</field>
         <field name="inherit_id" ref="purchase.purchase_order_form"/>
         <field name="arch" type="xml">
-            <field name="partner_id" position="after">
-                <field name="commercial_partner_id" invisible="1"/>
-            </field>
-            <xpath expr="//field[@name='order_line']" position="attributes">
-                <attribute name="context">{'default_commercial_partner_id': commercial_partner_id}</attribute>
-            </xpath>
-            <xpath expr="//field[@name='order_line']//field[@name='product_id']" position="before">
-                <field name="commercial_partner_id" invisible="1"/>
-            </xpath>
             <xpath expr="//field[@name='order_line']//field[@name='product_id']" position="attributes">
-                <attribute name="domain">[
-                    ('purchase_ok', '=', True),
-                    ('seller_ids.name.commercial_partner_id', '=', commercial_partner_id),
-                ]</attribute>
+                <attribute name="context">{
+                    'partner_id': parent.partner_id,
+                    'quantity': product_qty,
+                    'uom': product_uom,
+                    'company_id': parent.company_id,
+
+                    'filter_products_by_supplier': parent.partner_id,
+                }</attribute>
             </xpath>
         </field>
     </record>
