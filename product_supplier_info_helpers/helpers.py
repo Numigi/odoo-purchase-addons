@@ -1,6 +1,6 @@
 
 
-def get_products_from_supplier_info(info: 'product.supplier_info') -> 'product.product':
+def get_products_from_supplier_info(info: 'product.supplierinfo') -> 'product.product':
     """Get the products related to the given supplier info recordset.
 
     :param info: a recordset containing zero to many supplier prices.
@@ -14,7 +14,7 @@ def get_products_from_supplier_info(info: 'product.supplier_info') -> 'product.p
     )
 
 
-def get_supplier_info_from_product(product_variant: 'ProductProduct') -> 'product.supplier_info':
+def get_supplier_info_from_product(product_variant: 'ProductProduct') -> 'product.supplierinfo':
     """Get a supplier info recordset from the given product.
 
     :param product_variant: a product.product singleton.
