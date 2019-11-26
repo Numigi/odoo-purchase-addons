@@ -7,8 +7,21 @@
         <field name="inherit_id" ref="product.product_template_form_view"/>
         <field name="arch" type="xml">
             <div name="button_box" position="inside">
+                <!--
+                    The ETA button is invisible only for services.
+                    It is invisible for products that are not purchasable.
+                    It is invisible on product templates with multiple variants.
+                -->
                 <button class="oe_stat_button" type="object" name="action_open_eta_details"
                         icon="fa-hourglass-o"
+                        attrs="{
+                            'invisible': [
+                                '|', '|',
+                                ('type', 'not in', ('product', 'consu')),
+                                ('purchase_ok', '=', False),
+                                '&amp;', ('product_variant_count', '&gt;', 1), ('is_product_variant', '=', False),
+                            ],
+                        }"
                         >
                     <field string="ETA" name="eta" widget="statinfo"/>
                 </button>
