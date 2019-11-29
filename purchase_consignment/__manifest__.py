@@ -9,7 +9,10 @@
     'website': "https://bit.ly/numigi-com",
     'licence': "AGPL-3",
     'version': '1.0.1',
-    'depends': ['purchase_stock'],
+    'depends': [
+        'purchase_stock',
+        'product_supplier_info_helpers',
+    ],
     'data': [
         "views/product.xml",
         "views/product_category.xml",
