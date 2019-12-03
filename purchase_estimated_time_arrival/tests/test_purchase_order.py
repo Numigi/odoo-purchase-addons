@@ -34,6 +34,7 @@ class TestPurchaseOrder(SavepointCase):
             })]
         })
 
+        cls.order = cls.order.sudo(cls.env.ref('base.user_demo'))
         cls.order_line = cls.order.order_line
 
     @staticmethod
