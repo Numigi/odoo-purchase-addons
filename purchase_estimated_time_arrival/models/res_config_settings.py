@@ -8,7 +8,7 @@ ETA_DAYS_PARAMETER_NAME = 'purchase_eta_days'
 
 
 def get_purchase_eta_days(env) -> int:
-    value = env['ir.config_parameter'].get_param(ETA_DAYS_PARAMETER_NAME)
+    value = env['ir.config_parameter'].sudo().get_param(ETA_DAYS_PARAMETER_NAME)
     return int(value) if value else DEFAULT_ETA_DAYS
 
 

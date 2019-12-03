@@ -8,7 +8,7 @@ from ..models.res_config_settings import ETA_DAYS_PARAMETER_NAME
 
 def _generate_eta_entry(product, eta_days, receipt_date=None):
     receipt_date = receipt_date or datetime.now()
-    product.env['stock.arrival.time'].create({
+    product.env['stock.arrival.time'].sudo().create({
         'product_id': product.id,
         'purchase_date': receipt_date - timedelta(eta_days),
         'receipt_date': receipt_date,
@@ -27,6 +27,8 @@ class TestProduct(SavepointCase):
 
         cls.limit_in_days = 100
         cls.env['ir.config_parameter'].set_param(ETA_DAYS_PARAMETER_NAME, cls.limit_in_days)
+
+        cls.product = cls.product.sudo(cls.env.ref('base.user_demo'))
 
     def test_if_no_eta_lines__eta_is_zero(self):
         assert self.product.eta == 0
