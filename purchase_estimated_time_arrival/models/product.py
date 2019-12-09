@@ -74,4 +74,5 @@ class ProductTemplate(models.Model):
     def action_open_eta_details(self):
         action = _get_eta_details_action(self._context)
         action['context'] = dict(self._context, search_default_product_tmpl_id=self.id)
+        action['domain'] = [('product_id.active', '=', True)]
         return action
