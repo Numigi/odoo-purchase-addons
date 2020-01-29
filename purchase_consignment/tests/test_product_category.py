@@ -18,25 +18,9 @@ class TestPropagationToProduct(SavepointCase):
         })
 
     @data(True, False)
-    def test_on_consignment_checked__value_propagated_to_product(self, value):
-        self.product.consignment = not value
-
-        self.product.categ_id = self.category
-        assert self.product.consignment is not value
-
-        self.category.consignment = value
-        assert self.product.consignment is value
-
-    @data(True, False)
     def test_on_change_category__value_propagated_to_product(self, value):
         self.category.consignment = value
-        self.product.consignment = not value
         self.product.categ_id = self.category
-        assert self.product.consignment is not value
-
-        with self.env.do_in_onchange():
-            self.product._onchange_category_set_consignment()
-
         assert self.product.consignment is value
 
 

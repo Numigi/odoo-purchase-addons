@@ -27,17 +27,22 @@ class TestInventoryByOwner(SavepointCase):
             'usage': 'internal',
         })
 
+        cls.category = cls.env['product.category'].create({
+            'name': 'Consignment',
+            'consignment': True,
+        })
+
         cls.product_a = cls.env['product.product'].create({
             'name': 'Product A',
             'type': 'product',
-            'consignment': True,
+            'categ_id': cls.category.id,
             'seller_ids': [(0, 0, {'name': cls.supplier.id})],
         })
 
         cls.product_b = cls.env['product.product'].create({
             'name': 'Product B',
             'type': 'product',
-            'consignment': True,
+            'categ_id': cls.category.id,
             'seller_ids': [(0, 0, {'name': cls.supplier.id})],
         })
 
