@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="product_category_view_with_delivery_expenses" model="ir.ui.view">
+        <field name="name">Product Category Form: Add Consignment Delivery Expenses</field>
+        <field name="model">product.category</field>
+        <field name="inherit_id" ref="product.product_category_form_view"/>
+        <field name="arch" type="xml">
+            <group name="account_property" position="before">
+                <group string="Automated Expense on Delivery">
+                    <group>
+                        <field name="consignment_delivery_expense"/>
+                        <div colspan="2">
+                            If checked, deliveries will generate expense journal entries.
+                            Delivery returns generate inverse moves.
+                            This option is incompatible with the automated inventory valuation.
+                        </div>
+                    </group>
+                    <group attrs="{'invisible': [('consignment_delivery_expense', '=', False)]}">
+                        <field name="consignment_delivery_journal_id"
+                            string="Journal"
+                            attrs="{'required': [('consignment_delivery_expense', '=', True)]}"
+                            />
+                        <field name="consignment_delivery_expense_account_id"
+                            string="Expense Account"
+                            attrs="{'required': [('consignment_delivery_expense', '=', True)]}"
+                            />
+                        <field name="consignment_delivery_transit_account_id"
+                            string="Transit Account"
+                            attrs="{'required': [('consignment_delivery_expense', '=', True)]}"
+                            />
+                    </group>
+                </group>
+            </group>
+        </field>
+    </record>
+
+</odoo>

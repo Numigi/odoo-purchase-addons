@@ -13,6 +13,7 @@
     'depends': [
         'product_supplier_info_helpers',
         'purchase_consignment',
+        'purchase_consignment_delivery_expense',
         'purchase_consignment_inventory',
         'purchase_estimated_time_arrival',
         'purchase_invoice_empty_lines',
