@@ -17,10 +17,15 @@ class TestPropagationOfPartnerToStockMove(SavepointCase):
             'supplier': True,
         })
 
+        cls.category = cls.env['product.category'].create({
+            'name': 'Consignment',
+            'consignment': True,
+        })
+
         cls.product = cls.env['product.product'].create({
             'name': 'Product A',
             'type': 'product',
-            'consignment': True,
+            'categ_id': cls.category.id,
             'seller_ids': [(0, 0, {'name': cls.supplier.id})],
         })
 

@@ -9,6 +9,12 @@ class TestNameSearch(SavepointCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+
+        cls.category = cls.env['product.category'].create({
+            'name': 'Consignment',
+            'consignment': True,
+        })
+
         cls.supplier_a = cls.env['res.partner'].create({
             'name': 'Supplier A',
             'supplier': True,
@@ -22,21 +28,21 @@ class TestNameSearch(SavepointCase):
         cls.product_a1 = cls.env['product.product'].create({
             'name': 'Product A1',
             'type': 'product',
-            'consignment': True,
+            'categ_id': cls.category.id,
             'seller_ids': [(0, 0, {'name': cls.supplier_a.id})],
         })
 
         cls.product_a2 = cls.env['product.product'].create({
             'name': 'Product A2',
             'type': 'product',
-            'consignment': True,
+            'categ_id': cls.category.id,
             'seller_ids': [(0, 0, {'name': cls.supplier_a.id})],
         })
 
         cls.product_b1 = cls.env['product.product'].create({
             'name': 'Product B1',
             'type': 'product',
-            'consignment': True,
+            'categ_id': cls.category.id,
             'seller_ids': [(0, 0, {'name': cls.supplier_b.id})],
         })
 

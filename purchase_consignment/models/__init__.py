@@ -2,8 +2,10 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from . import (
-    product,
     product_category,
+    product_product,
+    product_supplierinfo,
+    product_template,
     purchase_order,
     stock_move,
 )
