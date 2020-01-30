@@ -1,9 +1,7 @@
 # © 2019 Numigi (tm) and all its contributors (https://bit.ly/numigiens)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-import pytest
 from datetime import datetime
-from odoo.exceptions import ValidationError
 from odoo.tests.common import SavepointCase
 
 

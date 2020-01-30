@@ -1,7 +1,7 @@
 # © 2019 Numigi (tm) and all its contributors (https://bit.ly/numigiens)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import api, fields, models
+from odoo import fields, models
 from odoo.addons.product_supplier_info_helpers.helpers import (
     get_supplier_info_from_product,
 )
