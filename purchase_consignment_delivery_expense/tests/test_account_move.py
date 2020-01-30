@@ -12,9 +12,23 @@ class ExpenseOnDeliveryCase(SavepointCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+        cls.company = cls.env['res.company'].create({
+            'name': 'Some Company',
+        })
+
+        cls.stock_user = cls.env['res.users'].create({
+            'name': 'Some User',
+            'login': 'stock.user@example.com',
+            'email': 'stock.user@example.com',
+            'groups_id': [(4, cls.env.ref('stock.group_stock_user').id)],
+            'company_id': cls.company.id,
+            'company_ids': [(4, cls.company.id)],
+        })
+
         cls.warehouse = cls.env['stock.warehouse'].create({
             'name': 'W1',
             'code': 'W1',
+            'company_id': cls.company.id,
         })
 
         cls.supplier = cls.env['res.partner'].create({
@@ -31,22 +45,28 @@ class ExpenseOnDeliveryCase(SavepointCase):
             'name': 'Consignment Expense',
             'code': '555111',
             'user_type_id': cls.env.ref('account.data_account_type_expenses').id,
+            'company_id': cls.company.id,
         })
 
         cls.transit_account = cls.env['account.account'].create({
             'name': 'Consignment Transit',
             'code': '222111',
             'user_type_id': cls.env.ref('account.data_account_type_current_liabilities').id,
+            'company_id': cls.company.id,
         })
 
         cls.journal = cls.env['account.journal'].create({
             'name': 'Consignment Journal',
             'code': 'CJ',
             'type': 'general',
+            'company_id': cls.company.id,
         })
 
         cls.category = cls.env['product.category'].create({
             'name': 'Consignment',
+        })
+
+        cls.category.with_context(force_company=cls.company.id).write({
             'consignment': True,
             'consignment_delivery_expense': True,
             'property_cost_method': 'standard',
@@ -64,10 +84,13 @@ class ExpenseOnDeliveryCase(SavepointCase):
             'name': 'Product A',
             'type': 'product',
             'categ_id': cls.category.id,
-            'standard_price': cls.cost,
             'seller_ids': [(0, 0, {'name': cls.supplier.id})],
             'uom_id': cls.product_uom.id,
             'uom_po_id': cls.product_po_uom.id,
+        })
+
+        cls.product.with_context(force_company=cls.company.id).write({
+            'standard_price': cls.cost,
         })
 
         cls.quant = cls.env['stock.quant'].create({
@@ -75,6 +98,7 @@ class ExpenseOnDeliveryCase(SavepointCase):
             'quantity': 100,
             'owner_id': cls.supplier.id,
             'location_id': cls.warehouse.lot_stock_id.id,
+            'company_id': cls.company.id,
         })
 
         cls.quantity = 10
@@ -82,6 +106,7 @@ class ExpenseOnDeliveryCase(SavepointCase):
         cls.order = cls.env['sale.order'].create({
             'partner_id': cls.customer.id,
             'warehouse_id': cls.warehouse.id,
+            'company_id': cls.company.id,
             'order_line': [(0, 0, {
                 'product_id': cls.product.id,
                 'product_uom': cls.product_uom.id,
@@ -92,14 +117,12 @@ class ExpenseOnDeliveryCase(SavepointCase):
             })]
         })
         cls.order.action_confirm()
-        cls.picking = cls.order.picking_ids
-        cls.move = cls.picking.move_lines
 
     @classmethod
     def _process_picking(cls, picking):
         for line in picking.move_line_ids:
             line.qty_done = line.product_uom_qty
-        picking.action_done()
+        picking.sudo(cls.stock_user).action_done()
 
 
 class TestDelivery(ExpenseOnDeliveryCase):
@@ -107,10 +130,24 @@ class TestDelivery(ExpenseOnDeliveryCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+        cls.picking = cls.order.picking_ids
         cls._process_picking(cls.picking)
-        cls.account_move = cls.move.account_move_ids
-        cls.debit_line = cls.account_move.line_ids.filtered(lambda l: l.debit)
-        cls.credit_line = cls.account_move.line_ids.filtered(lambda l: l.credit)
+
+    @property
+    def move(self):
+        return self.picking.move_lines
+
+    @property
+    def account_move(self):
+        return self.move.account_move_ids
+
+    @property
+    def debit_line(self):
+        return self.account_move.line_ids.filtered(lambda l: l.debit)
+
+    @property
+    def credit_line(self):
+        return self.account_move.line_ids.filtered(lambda l: l.credit)
 
     def test_ref(self):
         assert self.account_move.ref == self.picking.name
@@ -148,6 +185,12 @@ class TestDelivery(ExpenseOnDeliveryCase):
         assert self.debit_line.partner_id == self.supplier
         assert self.credit_line.partner_id == self.supplier
 
+    def test_account_move_is_posted(self):
+        assert self.account_move.state == 'posted'
+
+    def test_company(self):
+        assert self.account_move.company_id == self.company
+
 
 class TestDeliveryReturn(TestDelivery):
     """Test the return of a delivery of consigned products.
@@ -160,10 +203,6 @@ class TestDeliveryReturn(TestDelivery):
     def setUpClass(cls):
         super().setUpClass()
         cls.picking = cls._return_picking(cls.picking)
-        cls.move = cls.picking.move_lines
-        cls.account_move = cls.move.account_move_ids
-        cls.debit_line = cls.account_move.line_ids.filtered(lambda l: l.debit)
-        cls.credit_line = cls.account_move.line_ids.filtered(lambda l: l.credit)
 
     @classmethod
     def _return_picking(cls, picking):

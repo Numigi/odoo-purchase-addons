@@ -14,8 +14,16 @@ class StockMove(models.Model):
     def _action_done(self):
         moves = super()._action_done()
 
-        for move in moves.filtered(lambda m: m._requires_consginment_expense_account_move()):
-            move._create_consignment_expense_account_move()
+        moves_with_company_forced = (
+            m.with_context(force_company=m.company_id.id) for m in moves
+        )
+        moves_that_require_expense_move = (
+            m for m in moves_with_company_forced
+            if m._requires_consginment_expense_account_move()
+        )
+
+        for move in moves_that_require_expense_move:
+            move.sudo()._create_consignment_expense_account_move()
 
         return moves
 
@@ -38,7 +46,8 @@ class StockMove(models.Model):
 
     def _create_consignment_expense_account_move(self):
         vals = self._get_consignment_expense_account_move_vals()
-        self.env['account.move'].create(vals)
+        move = self.env['account.move'].create(vals)
+        move.post()
 
     def _get_consignment_expense_account_move_vals(self):
         return {
