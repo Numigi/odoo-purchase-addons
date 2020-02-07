@@ -46,7 +46,8 @@ workflows:
   version: 2
   odoo:
     jobs:
-      - tests
+      - tests:
+          context: quay.io
       - auto-tag:
           context: nws
           requires:

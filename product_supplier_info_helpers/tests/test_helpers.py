@@ -9,12 +9,6 @@ from ..helpers import (
 
 
 class TestSupplierInfoHelpers(SavepointCase):
-    """Test the tools to abstract the relation between products and supplier info.
-
-    The relation between a product and its supplier info in Odoo is complex.
-    The supplier info is either defined on the variant or on the product template.
-    There is no existing field that allows to make abstraction of this complexity.
-    """
 
     @classmethod
     def setUpClass(cls):
