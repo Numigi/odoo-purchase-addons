@@ -1,0 +1,44 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* purchase_consignment_inventory_line_domain
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-01-28 21:02+0000\n"
+"PO-Revision-Date: 2020-01-28 21:02+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: purchase_consignment_inventory_line_domain
+#: model:ir.model,name:purchase_consignment_inventory_line_domain.model_stock_inventory
+msgid "Inventory"
+msgstr ""
+
+#. module: purchase_consignment_inventory_line_domain
+#: model:ir.model,name:purchase_consignment_inventory_line_domain.model_stock_inventory_line
+msgid "Inventory Line"
+msgstr ""
+
+#. module: purchase_consignment_inventory_line_domain
+#: model:ir.model,name:purchase_consignment_inventory_line_domain.model_product_product
+msgid "Product"
+msgstr ""
+
+#. module: purchase_consignment_inventory_line_domain
+#: code:addons/purchase_consignment_inventory_line_domain/models/stock_inventory.py:30
+#, python-format
+msgid "The owner / supplier selected on the inventory ({}) must be selected on each inventory line."
+msgstr "Le propriétaire / fournisseur défini pour cet inventaire ({}) doit être sélectionné sur chaque ligne."
+
+#. module: purchase_consignment_inventory_line_domain
+#: code:addons/purchase_consignment_inventory_line_domain/models/stock_inventory.py:48
+#, python-format
+msgid "The product selected on the inventory line ({product}) does not belong to the selected owner / supplier ({owner})."
+msgstr "L'article sélectionné sur la ligne d'inventaire ({product}) n'est pas liée au propriétaire / fournisseur sélectionné ({owner})."
+
