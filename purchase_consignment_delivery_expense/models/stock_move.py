@@ -98,7 +98,7 @@ class StockMove(models.Model):
         }
 
     def _get_consignment_expense_cost(self):
-        return self.product_id.standard_price
+        return self.product_id.standard_price * self.product_uom_qty
 
     def _get_consignment_expense_partner(self):
         owner = self.move_line_ids.mapped('owner_id')

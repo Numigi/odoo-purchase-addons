@@ -100,6 +100,7 @@ class ExpenseOnDeliveryCase(SavepointCase):
         })
 
         cls.quantity = 10
+        cls.expected_value = cls.cost * cls.quantity
 
         cls.order = cls.env['sale.order'].create({
             'partner_id': cls.customer.id,
@@ -160,8 +161,8 @@ class TestDelivery(ExpenseOnDeliveryCase):
         assert self.account_move.journal_id == self.journal
 
     def test_cost(self):
-        assert self.credit_line.credit == self.cost
-        assert self.debit_line.debit == self.cost
+        assert self.credit_line.credit == self.expected_value
+        assert self.debit_line.debit == self.expected_value
 
     def test_product(self):
         assert self.credit_line.product_id == self.product
