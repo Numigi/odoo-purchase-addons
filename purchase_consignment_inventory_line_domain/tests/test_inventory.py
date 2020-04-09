@@ -67,3 +67,12 @@ class TestConsignmentOwner(TestOwner):
             'filter': 'consignment',
         })
         self.inventory.action_start()
+
+    def test_if_product_not_consignment__raise_error(self):
+        self._start_inventory_with_owner(self.supplier_a)
+
+        self.product_a.consignment = False
+        self.inventory.line_ids = self._new_inventory_line(self.product_a, owner=self.supplier_a)
+
+        with pytest.raises(ValidationError):
+            self.inventory.action_validate()

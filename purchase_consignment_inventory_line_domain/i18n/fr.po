@@ -42,3 +42,8 @@ msgstr "Le propriétaire / fournisseur défini pour cet inventaire ({}) doit êt
 msgid "The product selected on the inventory line ({product}) does not belong to the selected owner / supplier ({owner})."
 msgstr "L'article sélectionné sur la ligne d'inventaire ({product}) n'est pas liée au propriétaire / fournisseur sélectionné ({owner})."
 
+#. module: purchase_consignment_inventory_line_domain
+#: code:addons/purchase_consignment_inventory_line_domain/models/stock_inventory.py:0
+#, python-format
+msgid "The product {product} does not have the type consignment."
+msgstr "L'article {product} n'est pas de type consignation."
