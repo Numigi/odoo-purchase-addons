@@ -26,6 +26,10 @@ class StockPicking(models.Model):
         track_visibility='onchange',
     )
 
+    supplier_invoice_ids = fields.One2many(
+        'account.invoice', 'receipt_picking_id',
+    )
+
     show_supplier_reference = fields.Boolean(compute='_compute_show_supplier_reference')
 
     @api.model
