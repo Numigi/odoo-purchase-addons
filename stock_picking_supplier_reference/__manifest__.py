@@ -1,4 +1,4 @@
-# © 2019 Numigi (tm) and all its contributors (https://bit.ly/numigiens)
+# © 2020 - today Numigi (tm) and all its contributors (https://bit.ly/numigiens)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 {
@@ -9,7 +9,7 @@
     "website": "https://bit.ly/numigi-com",
     "licence": "AGPL-3",
     "version": "1.0.0",
-    "depends": ["stock_picking_supplier_reference"],
-    "data": ["views/account_invoice.xml", "views/stock_picking.xml"],
+    "depends": ["purchase_stock"],
+    "data": ["views/stock_picking.xml"],
     "installable": True,
 }
