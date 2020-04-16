@@ -10,6 +10,6 @@
     "licence": "AGPL-3",
     "version": "1.0.0",
     "depends": ["stock_picking_supplier_reference"],
-    "data": ["views/account_invoice.xml", "views/stock_picking.xml"],
+    "data": ["views/account_invoice.xml"],
     "installable": True,
 }

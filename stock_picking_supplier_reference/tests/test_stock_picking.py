@@ -72,11 +72,12 @@ class TestSearchPickingWithInvoiceContext(SavepointCase):
         assert result[0][0] == self.picking.id
         assert origin in result[0][1]
 
-    def test_2_pickings_with_same_reference__no_constraint(self):
+    def test_two_pickings_with_same_reference__no_constraint_on_company(self):
+        self.company.unique_picking_supplier_reference = False
         new_picking = self.picking.copy()
         new_picking.supplier_reference = self.supplier_reference
 
-    def test_2_pickings_with_same_reference__unique_constraint(self):
+    def test_two_pickings_with_same_reference__unique_constraint_on_company(self):
         self.company.unique_picking_supplier_reference = True
         new_picking = self.picking.copy()
         with pytest.raises(ValidationError):

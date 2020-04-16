@@ -1,79 +1,27 @@
-Purchase Invoice From Picking
-=============================
-This module allows to generate supplier invoice lines from receipt pickings.
+Stock Picking Supplier Reference
+================================
+This module adds the field ``Supplier Reference`` on stock pickings.
 
-.. contents:: Table of Contents
+.. image:: static/description/stock_picking_form.png
 
-Context
--------
-In vanilla Odoo, you may select a PO from a vendor bill by entering the vendor bill reference.
+The field is available on list view.
 
-.. image:: static/description/vanilla_odoo_vendor_bill.png
+.. image:: static/description/stock_picking_list.png
 
-This is convenient if your vendors issues invoices based on a sale orders (your purchase orders).
-This is less convenient if your vendor issues invoices based on deliveries.
+When filtering the list by picking name, the system also searches for matching supplier references.
 
-Overview
---------
-This module allows to select a stock picking from a draft invoice.
+.. image:: static/description/stock_picking_search.png
 
-.. image:: static/description/overview__invoice_picking_select.png
+Unique Constraint
+-----------------
+The module allows to make the supplier reference unique per company.
 
-When the picking is selected, one invoice line is added per stock move.
+To enable the constraint, go to the settings of the Inventory app and check the following box.
 
-.. image:: static/description/overview__invoice_lines_added.png
+.. image:: static/description/config_settings_form.png
 
-Each invoice line is properly binded to the origin PO line.
-
-Usage
------
-
-Purchase Order
-~~~~~~~~~~~~~~
-As member of ``Purchase / User``, I confirm a PO.
-
-.. image:: static/description/purchase_order_confirmed.png
-
-Receipt
-~~~~~~~
-As member of ``Stock / User``, when the order is received, I navigate to the form view of the picking.
-
-I notice a new field ``Supplier Reference``.
-
-.. image:: static/description/receipt_form.png
-
-I fill the supplier reference, then validate the receipt.
-
-.. image:: static/description/receipt_form_validated.png
-
-Note that one product (``[FURN_8888] Office Lamp``) was partially (10 out of 15) received. A backorder was created.
-
-Invoice
-~~~~~~~
-As member of ``Accounting / Billing``, when the supplier bill is received, I create a draft bill.
-
-I notice a new field ``Add a receipt``.
-
-.. image:: static/description/invoice.png
-
-I select my receipt.
-
-.. image:: static/description/invoice_select_receipt.png
-
-The invoice lines are automatically generated and the origin document was filled.
-
-The quantity on the invoice line is the received quantity from the picking.
-
-.. image:: static/description/invoice_lines_generated.png
-
-Credit Notes / Returns
-~~~~~~~~~~~~~~~~~~~~~~
-The module also allows to fill a credit note from a return picking.
-The behavior is exactly the same as described above for a receipt.
-
-A return picking can also be directly added to an invoice.
-In such case, the quantity on the new invoice lines will be negative.
-The total amount on the invoice will need to be positive (this is a standard Odoo constraint).
+This enables the feature only for the company on which you are logged in.
+This box needs to be checked for each relevant company.
 
 Contributors
 ------------

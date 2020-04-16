@@ -1,8 +1,9 @@
 # © 2020 - today Numigi (tm) and all its contributors (https://bit.ly/numigiens)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 from odoo.osv.expression import AND
+from odoo.exceptions import ValidationError
 
 
 class StockPicking(models.Model):
@@ -14,6 +15,33 @@ class StockPicking(models.Model):
     )
 
     show_supplier_reference = fields.Boolean(compute="_compute_show_supplier_reference")
+
+    @api.constrains("supplier_reference")
+    def _check_unique_supplier_reference(self):
+        pickings_to_check = self.filtered(
+            lambda p: p.supplier_reference
+            and p.company_id.unique_picking_supplier_reference
+        )
+        for picking in pickings_to_check:
+            picking._check_supplier_reference_is_unique()
+
+    def _check_supplier_reference_is_unique(self):
+        other_pickings = self.search(
+            [
+                ("supplier_reference", "=", self.supplier_reference),
+                ("company_id", "=", self.company_id.id),
+            ]
+        ).filtered(lambda p: p != self)
+        if other_pickings:
+            raise ValidationError(
+                _(
+                    "The receipt {picking} already has the supplier reference {reference}. "
+                    "A supplier reference can only be assigned to one receipt."
+                ).format(
+                    picking="\n".join(other_pickings.mapped("display_name")),
+                    reference=self.supplier_reference,
+                )
+            )
 
     @api.depends("location_id")
     def _compute_show_supplier_reference(self):
