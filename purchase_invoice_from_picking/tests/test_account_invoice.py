@@ -7,56 +7,68 @@ from uuid import uuid4
 
 
 class InvoiceFromPickingCase(SavepointCase):
-
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.supplier = cls.env['res.partner'].create({
-            'name': 'Supplier',
-            'supplier': True,
-        })
+        cls.supplier = cls.env["res.partner"].create(
+            {"name": "Supplier", "supplier": True}
+        )
 
-        cls.po_uom = cls.env.ref('uom.product_uom_kgm')
-        cls.stock_uom = cls.env.ref('uom.product_uom_lb')
+        cls.po_uom = cls.env.ref("uom.product_uom_kgm")
+        cls.stock_uom = cls.env.ref("uom.product_uom_lb")
 
-        cls.product_a = cls.env['product.product'].create({
-            'name': 'Product A',
-            'type': 'product',
-            'uom_id': cls.stock_uom.id,
-            'uom_po_id': cls.po_uom.id,
-        })
+        cls.product_a = cls.env["product.product"].create(
+            {
+                "name": "Product A",
+                "type": "product",
+                "uom_id": cls.stock_uom.id,
+                "uom_po_id": cls.po_uom.id,
+            }
+        )
 
-        cls.product_b = cls.env['product.product'].create({
-            'name': 'Product B',
-            'type': 'product',
-            'uom_id': cls.stock_uom.id,
-            'uom_po_id': cls.po_uom.id,
-        })
+        cls.product_b = cls.env["product.product"].create(
+            {
+                "name": "Product B",
+                "type": "product",
+                "uom_id": cls.stock_uom.id,
+                "uom_po_id": cls.po_uom.id,
+            }
+        )
 
         cls.qty_a = 10
         cls.qty_b = 20
 
-        cls.order = cls.env['purchase.order'].create({
-            'partner_id': cls.supplier.id,
-            'order_line': [
-                (0, 0, {
-                    'product_id': cls.product_a.id,
-                    'product_uom': cls.product_a.uom_po_id.id,
-                    'name': cls.product_a.name,
-                    'product_qty': cls.qty_a,
-                    'price_unit': 100,
-                    'date_planned': datetime.now(),
-                }),
-                (0, 0, {
-                    'product_id': cls.product_b.id,
-                    'product_uom': cls.product_b.uom_po_id.id,
-                    'name': cls.product_b.name,
-                    'product_qty': cls.qty_b,
-                    'price_unit': 100,
-                    'date_planned': datetime.now(),
-                }),
-            ]
-        })
+        cls.order = cls.env["purchase.order"].create(
+            {
+                "partner_id": cls.supplier.id,
+                "order_line": [
+                    (
+                        0,
+                        0,
+                        {
+                            "product_id": cls.product_a.id,
+                            "product_uom": cls.product_a.uom_po_id.id,
+                            "name": cls.product_a.name,
+                            "product_qty": cls.qty_a,
+                            "price_unit": 100,
+                            "date_planned": datetime.now(),
+                        },
+                    ),
+                    (
+                        0,
+                        0,
+                        {
+                            "product_id": cls.product_b.id,
+                            "product_uom": cls.product_b.uom_po_id.id,
+                            "name": cls.product_b.name,
+                            "product_qty": cls.qty_b,
+                            "price_unit": 100,
+                            "date_planned": datetime.now(),
+                        },
+                    ),
+                ],
+            }
+        )
         cls.order.button_confirm()
         cls.picking = cls.order.picking_ids
 
@@ -64,10 +76,9 @@ class InvoiceFromPickingCase(SavepointCase):
 
     @classmethod
     def make_empty_invoice(cls):
-        return cls.env['account.invoice'].create({
-            'type': 'in_invoice',
-            'partner_id': cls.supplier.id,
-        })
+        return cls.env["account.invoice"].create(
+            {"type": "in_invoice", "partner_id": cls.supplier.id}
+        )
 
     @staticmethod
     def select_picking_on_invoice(picking, invoice):
@@ -76,24 +87,22 @@ class InvoiceFromPickingCase(SavepointCase):
 
     @staticmethod
     def _process_picking_entirely(picking):
-        for move_line in picking.mapped('move_lines.move_line_ids'):
+        for move_line in picking.mapped("move_lines.move_line_ids"):
             move_line.qty_done = move_line.product_uom_qty
         picking.action_done()
 
     def _return_picking(self, picking):
-        wizard_obj = self.env['stock.return.picking'].with_context(
-            active_ids=[picking.id],
-            active_id=picking.id,
+        wizard_obj = self.env["stock.return.picking"].with_context(
+            active_ids=[picking.id], active_id=picking.id
         )
         wizard = wizard_obj.create(wizard_obj.default_get(list(wizard_obj._fields)))
         picking_id, dummy = wizard._create_returns()
-        return_picking = self.env['stock.picking'].browse(picking_id)
+        return_picking = self.env["stock.picking"].browse(picking_id)
         self._process_picking_entirely(return_picking)
         return return_picking
 
 
 class TestInvoiceFromFullReceipt(InvoiceFromPickingCase):
-
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -171,12 +180,26 @@ class TestInvoiceFromFullReceipt(InvoiceFromPickingCase):
         self.select_picking_on_invoice(self.picking, invoice_3)
         assert not invoice_3.invoice_line_ids
 
+    def test_picking_partially_invoiced(self):
+        self.select_picking_on_invoice(self.picking, self.invoice)
+        assert self.picking.receipt_invoiced
+        assert not self.picking.receipt_partially_invoiced
+
+        self._remove_product_from_invoice(self.invoice, self.product_a)
+        assert not self.picking.receipt_invoiced
+        assert self.picking.receipt_partially_invoiced
+
+    def test_if_invoice_cancelled__picking_not_invoiced(self):
+        self.select_picking_on_invoice(self.picking, self.invoice)
+        self.invoice.action_cancel()
+        assert not self.picking.receipt_invoiced
+        assert not self.picking.receipt_partially_invoiced
+
     def _remove_product_from_invoice(self, invoice, product):
         invoice.invoice_line_ids.filtered(lambda l: l.product_id == product).unlink()
 
 
 class TestInvoiceFromPartialReceipt(InvoiceFromPickingCase):
-
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -186,13 +209,18 @@ class TestInvoiceFromPartialReceipt(InvoiceFromPickingCase):
         cls.expected_qty_a = 2.268  # 5 lbs -> 2.268 kg
         cls.expected_qty_b = 4.536  # 10 lbs -> 4.536 kg
 
-        move_lines = cls.picking.mapped('move_lines.move_line_ids')
+        move_lines = cls.picking.mapped("move_lines.move_line_ids")
         move_line_a = move_lines.filtered(lambda l: l.product_id == cls.product_a)
         move_line_b = move_lines.filtered(lambda l: l.product_id == cls.product_b)
         move_line_a.qty_done = cls.received_qty_a
         move_line_b.qty_done = cls.received_qty_b
 
         cls.picking.action_done()
+
+    def test_receipt_invoiced(self):
+        assert not self.picking.receipt_invoiced
+        self.select_picking_on_invoice(self.picking, self.invoice)
+        assert self.picking.receipt_invoiced
 
     def test_if_picking_is_receipt__quantity_is_positive(self):
         self.select_picking_on_invoice(self.picking, self.invoice)

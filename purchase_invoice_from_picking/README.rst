@@ -66,6 +66,14 @@ The quantity on the invoice line is the received quantity from the picking.
 
 .. image:: static/description/invoice_lines_generated.png
 
+Invoiced / Partially Invoiced Filters
+-------------------------------------
+The module adds 2 filters on the list view of stock pickings.
+
+These filters allow to view receipts that are uninvoiced and partially invoiced.
+
+.. image:: static/description/stock_picking_filters.png
+
 Credit Notes / Returns
 ~~~~~~~~~~~~~~~~~~~~~~
 The module also allows to fill a credit note from a return picking.
