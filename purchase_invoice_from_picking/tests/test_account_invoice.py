@@ -60,10 +60,19 @@ class InvoiceFromPickingCase(SavepointCase):
         cls.order.button_confirm()
         cls.picking = cls.order.picking_ids
 
-        cls.invoice = cls.env['account.invoice'].create({
+        cls.invoice = cls.make_empty_invoice()
+
+    @classmethod
+    def make_empty_invoice(cls):
+        return cls.env['account.invoice'].create({
             'type': 'in_invoice',
             'partner_id': cls.supplier.id,
         })
+
+    @staticmethod
+    def select_picking_on_invoice(picking, invoice):
+        invoice.receipt_picking_id = picking
+        invoice.onchange_receipt_picking_id()
 
     @staticmethod
     def _process_picking_entirely(picking):
@@ -91,16 +100,14 @@ class TestInvoiceFromFullReceipt(InvoiceFromPickingCase):
         cls._process_picking_entirely(cls.picking)
 
     def test_after_select_picking__one_line_created_per_stock_move(self):
-        self.invoice.receipt_picking_id = self.picking
-        self.invoice.onchange_receipt_picking_id()
+        self.select_picking_on_invoice(self.picking, self.invoice)
         lines = self.invoice.invoice_line_ids
         assert len(lines) == 2
         assert lines[0].product_id == self.product_a
         assert lines[1].product_id == self.product_b
 
     def test_if_picking_is_receipt__quantity_is_positive(self):
-        self.invoice.receipt_picking_id = self.picking
-        self.invoice.onchange_receipt_picking_id()
+        self.select_picking_on_invoice(self.picking, self.invoice)
         lines = self.invoice.invoice_line_ids
         assert len(lines) == 2
         assert lines[0].quantity == self.qty_a
@@ -108,16 +115,14 @@ class TestInvoiceFromFullReceipt(InvoiceFromPickingCase):
 
     def test_if_picking_is_return__quantity_is_negative(self):
         picking = self._return_picking(self.picking)
-        self.invoice.receipt_picking_id = picking
-        self.invoice.onchange_receipt_picking_id()
+        self.select_picking_on_invoice(picking, self.invoice)
         lines = self.invoice.invoice_line_ids
         assert len(lines) == 2
         assert lines[0].quantity == -self.qty_a
         assert lines[1].quantity == -self.qty_b
 
     def test_if_picking_is_receipt__invoice_lines_bound_to_po_line(self):
-        self.invoice.receipt_picking_id = self.picking
-        self.invoice.onchange_receipt_picking_id()
+        self.select_picking_on_invoice(self.picking, self.invoice)
         lines = self.invoice.invoice_line_ids
         assert len(lines) == 2
         assert lines[0].purchase_line_id == self.order.order_line[0]
@@ -125,8 +130,7 @@ class TestInvoiceFromFullReceipt(InvoiceFromPickingCase):
 
     def test_if_picking_is_return__invoice_lines_bound_to_po_line(self):
         picking = self._return_picking(self.picking)
-        self.invoice.receipt_picking_id = picking
-        self.invoice.onchange_receipt_picking_id()
+        self.select_picking_on_invoice(picking, self.invoice)
         lines = self.invoice.invoice_line_ids
         assert len(lines) == 2
         assert lines[0].purchase_line_id == self.order.order_line[0]
@@ -136,8 +140,7 @@ class TestInvoiceFromFullReceipt(InvoiceFromPickingCase):
         supplier_reference = str(uuid4())
         self.picking.supplier_reference = supplier_reference
 
-        self.invoice.receipt_picking_id = self.picking
-        self.invoice.onchange_receipt_picking_id()
+        self.select_picking_on_invoice(self.picking, self.invoice)
         self.invoice._onchange_origin()
 
         assert supplier_reference in self.invoice.origin
@@ -150,12 +153,26 @@ class TestInvoiceFromFullReceipt(InvoiceFromPickingCase):
         assert self.order.name in self.invoice.origin
 
     def test_if_picking_selected_twice__no_duplicate_lines_added(self):
-        self.invoice.receipt_picking_id = self.picking
-        self.invoice.onchange_receipt_picking_id()
-        self.invoice.receipt_picking_id = self.picking
-        self.invoice.onchange_receipt_picking_id()
+        self.select_picking_on_invoice(self.picking, self.invoice)
+        self.select_picking_on_invoice(self.picking, self.invoice)
         lines = self.invoice.invoice_line_ids
         assert len(lines) == 2
+
+    def test_same_moves_not_added_on_different_invoices(self):
+        self.select_picking_on_invoice(self.picking, self.invoice)
+        self._remove_product_from_invoice(self.invoice, self.product_a)
+
+        invoice_2 = self.make_empty_invoice()
+        self.select_picking_on_invoice(self.picking, invoice_2)
+        assert len(invoice_2.invoice_line_ids) == 1
+        assert invoice_2.invoice_line_ids.product_id == self.product_a
+
+        invoice_3 = self.make_empty_invoice()
+        self.select_picking_on_invoice(self.picking, invoice_3)
+        assert not invoice_3.invoice_line_ids
+
+    def _remove_product_from_invoice(self, invoice, product):
+        invoice.invoice_line_ids.filtered(lambda l: l.product_id == product).unlink()
 
 
 class TestInvoiceFromPartialReceipt(InvoiceFromPickingCase):
@@ -178,8 +195,7 @@ class TestInvoiceFromPartialReceipt(InvoiceFromPickingCase):
         cls.picking.action_done()
 
     def test_if_picking_is_receipt__quantity_is_positive(self):
-        self.invoice.receipt_picking_id = self.picking
-        self.invoice.onchange_receipt_picking_id()
+        self.select_picking_on_invoice(self.picking, self.invoice)
         lines = self.invoice.invoice_line_ids
         assert len(lines) == 2
         assert lines[0].quantity == self.expected_qty_a
@@ -187,8 +203,7 @@ class TestInvoiceFromPartialReceipt(InvoiceFromPickingCase):
 
     def test_if_picking_is_return__quantity_is_negative(self):
         picking = self._return_picking(self.picking)
-        self.invoice.receipt_picking_id = picking
-        self.invoice.onchange_receipt_picking_id()
+        self.select_picking_on_invoice(picking, self.invoice)
         lines = self.invoice.invoice_line_ids
         assert len(lines) == 2
         assert lines[0].quantity == -self.expected_qty_a

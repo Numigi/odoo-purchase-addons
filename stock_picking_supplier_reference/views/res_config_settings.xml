@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="stock_settings" model="ir.ui.view">
+        <field name="name">res.config.settings: unique constraint on picking supplier reference</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="stock.res_config_settings_view_form" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='module_stock_barcode']/../../.." position="inside">
+                <div class="col-12 col-lg-6 o_setting_box">
+                    <div class="o_setting_left_pane">
+                        <field name="unique_picking_supplier_reference" widget="upgrade_boolean"/>
+                    </div>
+                    <div class="o_setting_right_pane" id="barcode_settings">
+                        <label for="unique_picking_supplier_reference"/>
+                        <div class="text-muted">
+                            Each receipt order must have a unique supplier reference.
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

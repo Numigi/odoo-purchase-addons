@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="picking_form_with_supplier_reference" model="ir.ui.view">
+        <field name="name">Stock Picking Form: add supplier_reference</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <field name="origin" position="after">
+                <field name="show_supplier_reference" invisible="1"/>
+                <field name="supplier_reference" attrs="{'invisible': [('show_supplier_reference', '=', False)]}"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="picking_list_with_supplier_reference" model="ir.ui.view">
+        <field name="name">Stock Picking List: add supplier reference</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.vpicktree"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="supplier_reference"/>
+            </field>
+        </field>
+    </record>
+
+    <record id="picking_search_with_supplier_reference" model="ir.ui.view">
+        <field name="name">Stock Picking Search: add supplier reference</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+        <field name="arch" type="xml">
+            <field name="name" position="attributes">
+                <attribute name="filter_domain">
+                    [
+                        '|',
+                        '|',
+                        ('name', 'ilike', self),
+                        ('origin', 'ilike', self),
+                        ('supplier_reference', 'ilike', self),
+                    ]
+                </attribute>
+            </field>
+        </field>
+    </record>
+
+</odoo>

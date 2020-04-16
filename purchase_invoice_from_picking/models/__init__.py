@@ -3,5 +3,6 @@
 
 from . import (
     account_invoice,
+    stock_move,
     stock_picking,
 )
