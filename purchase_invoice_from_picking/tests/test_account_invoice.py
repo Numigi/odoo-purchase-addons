@@ -14,8 +14,8 @@ class InvoiceFromPickingCase(SavepointCase):
             {"name": "Supplier", "supplier": True}
         )
 
-        cls.po_uom = cls.env.ref("uom.product_uom_kgm")
-        cls.stock_uom = cls.env.ref("uom.product_uom_lb")
+        cls.po_uom = cls.env.ref("product.product_uom_kgm")
+        cls.stock_uom = cls.env.ref("product.product_uom_lb")
 
         cls.product_a = cls.env["product.product"].create(
             {

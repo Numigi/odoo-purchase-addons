@@ -6,7 +6,8 @@
         <field name="model">account.invoice</field>
         <field name="inherit_id" ref="purchase.view_invoice_supplier_purchase_form"/>
         <field name="arch" type="xml">
-            <field name="vendor_bill_purchase_id" position="after">
+            <field name="purchase_id" position="after">
+                <field name="commercial_partner_id" invisible="1"/>
                 <field name="receipt_picking_id"
                     attrs="{'invisible': [('state', '!=', 'draft')]}"
                     class="oe_edit_only"
@@ -14,7 +15,7 @@
                         '&amp;',
                         ('state', '=', 'done'),
                         '&amp;',
-                        ('partner_id', 'child_of', commercial_partner_id),
+                        ('partner_id', 'child_of',  commercial_partner_id),
                         '&amp;',
                         ('receipt_invoiced', '=', False),
                         '|',

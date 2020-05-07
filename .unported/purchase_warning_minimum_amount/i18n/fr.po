@@ -1,0 +1,93 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* purchase_warning_minimum_amount
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-07-30 11:42+0000\n"
+"PO-Revision-Date: 2019-07-30 11:42+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: purchase_warning_minimum_amount
+#: model_terms:ir.ui.view,arch_db:purchase_warning_minimum_amount.wizard_alert_message
+msgid "CANCEL"
+msgstr "ANNULER"
+
+#. module: purchase_warning_minimum_amount
+#: model:ir.model,name:purchase_warning_minimum_amount.model_res_partner
+msgid "Contact"
+msgstr ""
+
+#. module: purchase_warning_minimum_amount
+#: model:ir.model.fields,field_description:purchase_warning_minimum_amount.field_wizard_alert__create_uid
+msgid "Created by"
+msgstr "Créé par"
+
+#. module: purchase_warning_minimum_amount
+#: model:ir.model.fields,field_description:purchase_warning_minimum_amount.field_wizard_alert__create_date
+msgid "Created on"
+msgstr "Créé le"
+
+#. module: purchase_warning_minimum_amount
+#: model:ir.model.fields,field_description:purchase_warning_minimum_amount.field_wizard_alert__display_name
+msgid "Display Name"
+msgstr "Nom affiché"
+
+#. module: purchase_warning_minimum_amount
+#: model:ir.model.fields,field_description:purchase_warning_minimum_amount.field_wizard_alert__id
+msgid "ID"
+msgstr ""
+
+#. module: purchase_warning_minimum_amount
+#: model:ir.model.fields,field_description:purchase_warning_minimum_amount.field_wizard_alert____last_update
+msgid "Last Modified on"
+msgstr "Dernière modification le"
+
+#. module: purchase_warning_minimum_amount
+#: model:ir.model.fields,field_description:purchase_warning_minimum_amount.field_wizard_alert__write_uid
+msgid "Last Updated by"
+msgstr "Dernière mise à jour par"
+
+#. module: purchase_warning_minimum_amount
+#: model:ir.model.fields,field_description:purchase_warning_minimum_amount.field_wizard_alert__write_date
+msgid "Last Updated on"
+msgstr "Dernière mise à jour le"
+
+#. module: purchase_warning_minimum_amount
+#: model:ir.model.fields,field_description:purchase_warning_minimum_amount.field_purchase_order__min_purchase_amount
+#: model:ir.model.fields,field_description:purchase_warning_minimum_amount.field_res_partner__min_purchase_amount
+#: model:ir.model.fields,field_description:purchase_warning_minimum_amount.field_res_users__min_purchase_amount
+msgid "Minimum Purchase amount"
+msgstr "Montant minimum d’achat"
+
+#. module: purchase_warning_minimum_amount
+#: model_terms:ir.ui.view,arch_db:purchase_warning_minimum_amount.wizard_alert_message
+msgid "OK"
+msgstr "OK"
+
+#. module: purchase_warning_minimum_amount
+#: model:ir.model,name:purchase_warning_minimum_amount.model_purchase_order
+#: model:ir.model.fields,field_description:purchase_warning_minimum_amount.field_wizard_alert__order_id
+msgid "Purchase Order"
+msgstr "Commande fournisseur"
+
+#. module: purchase_warning_minimum_amount
+#: model_terms:ir.ui.view,arch_db:purchase_warning_minimum_amount.wizard_alert_message
+msgid "The minimum order amount for the selected supplier is not reached<br/>\n"
+"                        Would you like to confirm your order anyway?<br/>\n"
+"                        Click OK to Confirm the order or Cancel to add other products."
+msgstr "Le montant minimum de la commande pour le fournisseur sélectionné n'est pas atteint<br/>\n"
+"                        Souhaitez-vous tout de même confirmer votre commande?<br/>\n"
+"                        Cliquez sur OK pour confirmer la commande ou Annuler pour ajouter des produits."
+
+#. module: purchase_warning_minimum_amount
+#: model_terms:ir.ui.view,arch_db:purchase_warning_minimum_amount.wizard_alert_message
+msgid "Warning"
+msgstr "Avertissement"
