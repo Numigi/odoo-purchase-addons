@@ -9,7 +9,7 @@
             <xpath expr="//field[@name='module_stock_barcode']/../../.." position="inside">
                 <div class="col-12 col-lg-6 o_setting_box">
                     <div class="o_setting_left_pane">
-                        <field name="unique_picking_supplier_reference" widget="upgrade_boolean"/>
+                        <field name="unique_picking_supplier_reference"/>
                     </div>
                     <div class="o_setting_right_pane" id="barcode_settings">
                         <label for="unique_picking_supplier_reference"/>
