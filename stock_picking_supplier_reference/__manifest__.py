@@ -8,7 +8,7 @@
     "maintainer": "Numigi",
     "website": "https://bit.ly/numigi-com",
     "licence": "AGPL-3",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "depends": ["purchase_stock"],
     "data": ["views/stock_picking.xml", "views/res_config_settings.xml"],
     "installable": True,
