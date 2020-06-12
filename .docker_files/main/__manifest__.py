@@ -12,6 +12,7 @@
     "summary": "Install all addons required for testing.",
     "depends": [
         "sale_stock",  # required for testing purchase_consignment_delivery_expense
+        "onchange_helper",  # used for testing purchase_consignment
         "product_supplier_info_helpers",
         "purchase_consignment",
         "purchase_consignment_delivery_expense",
