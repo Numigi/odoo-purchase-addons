@@ -8,4 +8,5 @@ from . import (
     product_template,
     purchase_order,
     stock_move,
+    stock_move_line,
 )

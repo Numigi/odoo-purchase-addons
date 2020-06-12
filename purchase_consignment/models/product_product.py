@@ -10,24 +10,32 @@ from odoo.addons.product_supplier_info_helpers.helpers import (
 
 class Product(models.Model):
 
-    _inherit = 'product.product'
+    _inherit = "product.product"
 
-    @api.constrains('consignment')
+    def get_consignment_supplier(self):
+        return self._get_commercial_suppliers()[:1]
+
+    @api.constrains("consignment")
     def _check_single_consigned_vendor_if_consigned(self):
         products_with_consignment = self.filtered(lambda p: p.consignment)
         for product in products_with_consignment:
             product._check_single_consignment_vendor()
 
     def _check_single_consignment_vendor(self):
-        supplier_info = get_supplier_info_from_product(self)
-        vendors = supplier_info.mapped('name.commercial_partner_id')
+        vendors = self._get_commercial_suppliers()
         if len(vendors) > 1:
-            raise ValidationError(_(
-                'The product {product} is consigned. '
-                'Therefore, you may not select more than one different vendor '
-                'on this product. The following vendors were selected:\n'
-                ' * {vendors}'
-            ).format(
-                product=self.display_name,
-                vendors='\n * '.join(vendors.mapped('display_name'))
-            ))
+            raise ValidationError(
+                _(
+                    "The product {product} is consigned. "
+                    "Therefore, you may not select more than one different vendor "
+                    "on this product. The following vendors were selected:\n"
+                    " * {vendors}"
+                ).format(
+                    product=self.display_name,
+                    vendors="\n * ".join(vendors.mapped("display_name")),
+                )
+            )
+
+    def _get_commercial_suppliers(self):
+        supplier_info = get_supplier_info_from_product(self)
+        return supplier_info.mapped("name.commercial_partner_id")
