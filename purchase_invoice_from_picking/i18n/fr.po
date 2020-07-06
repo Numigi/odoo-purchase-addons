@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-07 17:54+0000\n"
-"PO-Revision-Date: 2020-05-07 13:55-0400\n"
+"POT-Creation-Date: 2020-07-06 18:21+0000\n"
+"PO-Revision-Date: 2020-07-06 14:23-0400\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -23,6 +23,16 @@ msgid "Add Receipts"
 msgstr "Ajouter des réceptions"
 
 #. module: purchase_invoice_from_picking
+#: model:ir.ui.view,arch_db:purchase_invoice_from_picking.stock_picking_form
+msgid "Force Invoiced Status"
+msgstr "Forcer le statut facturé"
+
+#. module: purchase_invoice_from_picking
+#: model:ir.model.fields,field_description:purchase_invoice_from_picking.field_stock_picking_force_receipt_invoiced
+msgid "Force Receipt Invoiced"
+msgstr "Forcer le statut facturé"
+
+#. module: purchase_invoice_from_picking
 #: model:ir.model,name:purchase_invoice_from_picking.model_account_invoice
 msgid "Invoice"
 msgstr ""
@@ -31,6 +41,16 @@ msgstr ""
 #: model:ir.model,name:purchase_invoice_from_picking.model_account_invoice_line
 msgid "Invoice Line"
 msgstr ""
+
+#. module: purchase_invoice_from_picking
+#: model:ir.ui.view,arch_db:purchase_invoice_from_picking.stock_picking_form
+msgid "Invoice Status"
+msgstr "Statut de facturation"
+
+#. module: purchase_invoice_from_picking
+#: model:ir.ui.view,arch_db:purchase_invoice_from_picking.stock_picking_form
+msgid "Invoiced"
+msgstr "Facturé"
 
 #. module: purchase_invoice_from_picking
 #: model:ir.model.fields,help:purchase_invoice_from_picking.field_account_invoice_receipt_picking_id
@@ -42,6 +62,7 @@ msgstr ""
 "réceptions peuvent être sélectionnées."
 
 #. module: purchase_invoice_from_picking
+#: model:ir.ui.view,arch_db:purchase_invoice_from_picking.stock_picking_form
 #: model:ir.ui.view,arch_db:purchase_invoice_from_picking.stock_picking_search
 msgid "Partially Invoiced"
 msgstr "Partiellement facturé"
@@ -66,6 +87,11 @@ msgstr "Réception partiellement facturée"
 #: model:ir.model.fields,field_description:purchase_invoice_from_picking.field_account_invoice_line_receipt_move_id
 msgid "Related Receipt Move"
 msgstr "Mouvement de réception lié"
+
+#. module: purchase_invoice_from_picking
+#: model:ir.model.fields,field_description:purchase_invoice_from_picking.field_stock_picking_show_receipt_invoice_status
+msgid "Show Receipt Invoice Status"
+msgstr "Montrer le statut de facturation"
 
 #. module: purchase_invoice_from_picking
 #: model:ir.model,name:purchase_invoice_from_picking.model_stock_move
