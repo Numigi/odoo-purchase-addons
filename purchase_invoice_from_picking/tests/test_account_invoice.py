@@ -195,6 +195,11 @@ class TestInvoiceFromFullReceipt(InvoiceFromPickingCase):
         assert not self.picking.receipt_invoiced
         assert not self.picking.receipt_partially_invoiced
 
+    def test_force_receipt_invoiced(self):
+        self.picking.force_receipt_invoiced = True
+        assert self.picking.receipt_invoiced
+        assert not self.picking.receipt_partially_invoiced
+
     def _remove_product_from_invoice(self, invoice, product):
         invoice.invoice_line_ids.filtered(lambda l: l.product_id == product).unlink()
 

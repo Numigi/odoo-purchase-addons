@@ -83,6 +83,21 @@ A return picking can also be directly added to an invoice.
 In such case, the quantity on the new invoice lines will be negative.
 The total amount on the invoice will need to be positive (this is a standard Odoo constraint).
 
+Forcing A Picking As Invoiced
+-----------------------------
+Since version 1.1.0 of the module, it is possible to manually set a picking as invoiced.
+
+After installing the module, this prevents old pickings (invoiced before the installation of the module)
+from appearing in the selection­.
+
+For this, go to the form view of the picking and check the box ``Force Invoiced Status``.
+
+.. image:: static/description/picking_force_invoiced.png
+
+When ``Force Invoiced Status`` is checked, the status ``Invoiced`` is automatically checked.
+
+.. image:: static/description/picking_force_invoiced_checked.png
+
 Contributors
 ------------
 * Numigi (tm) and all its contributors (https://bit.ly/numigiens)
