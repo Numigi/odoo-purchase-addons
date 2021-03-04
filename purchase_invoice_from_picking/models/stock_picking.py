@@ -8,9 +8,11 @@ class StockPicking(models.Model):
 
     _inherit = "stock.picking"
 
-    receipt_invoiced = fields.Boolean(compute="_compute_receipt_invoiced", store=True)
+    receipt_invoiced = fields.Boolean(
+        compute="_compute_receipt_invoiced", store=True, compute_sudo=True
+    )
     receipt_partially_invoiced = fields.Boolean(
-        compute="_compute_receipt_invoiced", store=True
+        compute="_compute_receipt_invoiced", store=True, compute_sudo=True
     )
 
     @api.depends("move_lines.receipt_invoiced")

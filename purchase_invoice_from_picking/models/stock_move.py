@@ -12,7 +12,9 @@ class StockMove(models.Model):
         "account.invoice.line", "receipt_move_id"
     )
 
-    receipt_invoiced = fields.Boolean(compute="_compute_receipt_invoiced", store=True)
+    receipt_invoiced = fields.Boolean(
+        compute="_compute_receipt_invoiced", store=True, compute_sudo=True
+    )
 
     @api.depends(
         "supplier_invoice_line_ids", "supplier_invoice_line_ids.invoice_id.state"
