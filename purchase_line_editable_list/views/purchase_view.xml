@@ -4,7 +4,7 @@
     <record id="purchase_order_line_editable_list" model="ir.ui.view">
         <field name="name">Purchase Order Line: editable list view</field>
         <field name="model">purchase.order.line</field>
-        <field name="sequence">0</field>
+        <field name="priority">0</field>
         <field name="arch" type="xml">
             <tree editable="top">
                 <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
