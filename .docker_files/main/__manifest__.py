@@ -20,6 +20,7 @@
         "purchase_estimated_time_arrival",
         "purchase_invoice_empty_lines",
         "purchase_invoice_from_picking",
+        "purchase_line_editable_list",
         "purchase_partner_products",
         "purchase_warning_minimum_amount",
         "stock_picking_supplier_reference",
