@@ -9,6 +9,7 @@
             <tree editable="top">
                 <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
                 <field name="order_id"
+                    string="Order"
                     attrs="{'readonly': [('state', '!=', 'draft'), ('state', '!=', False)]}"
                     domain="[('state', '=', 'draft')]"
                     />
@@ -36,6 +37,7 @@
                 <field name="qty_received" readonly="1" sum="Received Quantity"/>
                 <field name="qty_invoiced" readonly="1" sum="Invoiced Quantity"/>
                 <field name="product_uom"
+                    string="UoM"
                     groups="uom.group_uom"
                     attrs="{'readonly': [('state', '!=', 'draft'), ('state', '!=', False)]}"
                     force_save="1"
