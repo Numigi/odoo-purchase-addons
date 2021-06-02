@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="purchase_order_line_editable_list" model="ir.ui.view">
+        <field name="name">Purchase Order Line: editable list view</field>
+        <field name="model">purchase.order.line</field>
+        <field name="priority">0</field>
+        <field name="arch" type="xml">
+            <tree editable="top">
+                <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                <field name="order_id"
+                    string="Order"
+                    attrs="{'readonly': [('state', '!=', 'draft'), ('state', '!=', False)]}"
+                    domain="[('state', '=', 'draft')]"
+                    />
+                <field name="partner_id"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="state" invisible="1"/>
+                <field name="invoice_lines" invisible="1"/>
+                <field name="product_id"
+                    attrs="{'readonly': [('state', '!=', 'draft'), ('state', '!=', False)]}"
+                    context="{'partner_id': partner_id, 'quantity': product_qty, 'uom': product_uom, 'company_id': company_id}"
+                    force_save="1"
+                    />
+                <field name="name"/>
+                <field name="date_planned"/>
+                <field name="account_analytic_id"
+                    context="{'default_partner_id': partner_id}"
+                    groups="analytic.group_analytic_accounting"
+                    />
+                <field name="analytic_tag_ids"
+                    groups="analytic.group_analytic_tags"
+                    widget="many2many_tags"
+                    options="{'color_field': 'color'}"
+                    />
+                <field name="product_qty" sum="Quantity"/>
+                <field name="qty_received" readonly="1" sum="Received Quantity"/>
+                <field name="qty_invoiced" readonly="1" sum="Invoiced Quantity"/>
+                <field name="product_uom"
+                    string="UoM"
+                    groups="uom.group_uom"
+                    attrs="{'readonly': [('state', '!=', 'draft'), ('state', '!=', False)]}"
+                    force_save="1"
+                    />
+                <field name="price_unit" attrs="{'readonly': [('invoice_lines', '!=', [])]}"/>
+                <field name="taxes_id"
+                    widget="many2many_tags"
+                    domain="[('type_tax_use', '=', 'purchase')]"
+                    context="{'default_type_tax_use': 'purchase', 'search_view_ref': 'account.account_tax_view_search'}"
+                    options="{'no_create': True}"
+                    />
+                <field name="price_subtotal" widget="monetary" sum="Subtotal"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="purchase_line_action" model="ir.actions.act_window">
+        <field name="name">Purchase Order Lines</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">purchase.order.line</field>
+        <field name="view_mode">tree,pivot,graph</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+        <field name="view_id" ref="purchase_order_line_editable_list"/>
+    </record>
+
+    <menuitem
+        id="purchase_line_menu"
+        action="purchase_line_action"
+        parent="purchase.menu_procurement_management"
+        sequence="99"
+        />
+
+</odoo>
