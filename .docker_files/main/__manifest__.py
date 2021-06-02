@@ -23,6 +23,7 @@
         "purchase_line_editable_list",
         "purchase_partner_products",
         "purchase_warning_minimum_amount",
+        "stock_orderpoint_editable_list",
         "stock_picking_supplier_reference",
     ],
     "installable": True,
