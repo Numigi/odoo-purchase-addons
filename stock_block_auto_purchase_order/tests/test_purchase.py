@@ -20,4 +20,34 @@ class TestPurchase(common.SavepointCase):
             },
             self.partner,
         )
-        self.assertIn(("block_auto_purchase_order", "=", False), domain)
+        assert ("block_auto_purchase_order", "=", False) in domain
+
+
+class TestProductCategories(common.SavepointCase):
+    def setUp(self):
+        super().setUp()
+        self.partner = self.env["res.partner"].new({})
+
+        self.product = self.env["product.product"].new({})
+
+        self.order = self.env["purchase.order"].new({})
+        self.order.partner_id = self.partner
+
+        self.line = self.env["purchase.order.line"].new({})
+        self.line.product_id = self.product
+
+        self.order.order_line = self.line
+
+    def test_product_with_automatic_block(self):
+        self.product.block_auto_purchase_order = True
+        self.order.onchange_lines_set_automatic_block()
+        assert self.order.block_auto_purchase_order
+
+    def test_product_without_automatic_block(self):
+        self.order.onchange_lines_set_automatic_block()
+        assert not self.order.block_auto_purchase_order
+
+    def test_box_checked_manually_on_purchase_order(self):
+        self.order.block_auto_purchase_order = True
+        self.order.onchange_lines_set_automatic_block()
+        assert self.order.block_auto_purchase_order

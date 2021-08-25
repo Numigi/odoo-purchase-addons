@@ -13,6 +13,7 @@
         "purchase_stock",
     ],
     "data": [
+        "views/product_template.xml",
         "views/purchase_order.xml",
     ],
 }

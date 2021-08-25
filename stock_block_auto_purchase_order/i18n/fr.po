@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 11.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-24 17:33+0000\n"
-"PO-Revision-Date: 2021-08-24 13:34-0400\n"
+"POT-Creation-Date: 2021-08-30 12:36+0000\n"
+"PO-Revision-Date: 2021-08-30 08:36-0400\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -18,9 +18,21 @@ msgstr ""
 "X-Generator: Poedit 2.3\n"
 
 #. module: stock_block_auto_purchase_order
+#: model:ir.model.fields,field_description:stock_block_auto_purchase_order.field_product_product__block_auto_purchase_order
+#: model:ir.model.fields,field_description:stock_block_auto_purchase_order.field_product_template__block_auto_purchase_order
 #: model:ir.model.fields,field_description:stock_block_auto_purchase_order.field_purchase_order__block_auto_purchase_order
 msgid "Block Automatic Product Add"
 msgstr "Bloquer ajout produit auto"
+
+#. module: stock_block_auto_purchase_order
+#: model:ir.model,name:stock_block_auto_purchase_order.model_product_category
+msgid "Product Category"
+msgstr ""
+
+#. module: stock_block_auto_purchase_order
+#: model:ir.model,name:stock_block_auto_purchase_order.model_product_template
+msgid "Product Template"
+msgstr ""
 
 #. module: stock_block_auto_purchase_order
 #: model:ir.model,name:stock_block_auto_purchase_order.model_purchase_order
@@ -33,6 +45,8 @@ msgid "Stock Rule"
 msgstr ""
 
 #. module: stock_block_auto_purchase_order
+#: model:ir.model.fields,help:stock_block_auto_purchase_order.field_product_product__block_auto_purchase_order
+#: model:ir.model.fields,help:stock_block_auto_purchase_order.field_product_template__block_auto_purchase_order
 #: model:ir.model.fields,help:stock_block_auto_purchase_order.field_purchase_order__block_auto_purchase_order
 msgid ""
 "When checked, this field prevents products from being automatically added to "
