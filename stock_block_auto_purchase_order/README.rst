@@ -23,12 +23,12 @@ based on procurements.
 
 Advanced Configuration
 ----------------------
-For some categories of products, you may want to always prevent the purchase order
+For some products, you may want to always prevent the purchase order
 from accepting products from automatic procurements.
 
-On the form view of a product category, you will find a new checkbox.
+On the form view of a product, you will find a new checkbox.
 
-.. image:: static/description/product_category_form.png
+.. image:: static/description/product_form.png
 
 If this box is checked, when the product is manually added to a purchase order,
 the box will be automatically checked on the PO as well.
