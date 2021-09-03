@@ -10,4 +10,4 @@ class StockRule(models.Model):
 
     def _make_po_get_domain(self, values, partner):
         domain = super()._make_po_get_domain(values, partner)
-        return [*domain, ("block_auto_purchase_order", "=", False)]
+        return domain + (("block_auto_purchase_order", "=", False),)
