@@ -26,6 +26,7 @@
         "purchase_warning_minimum_amount",
         "stock_block_auto_purchase_order",
         "stock_orderpoint_editable_list",
+        "stock_picking_groupby_purchase_user",
         "stock_picking_supplier_reference",
     ],
     "installable": True,
