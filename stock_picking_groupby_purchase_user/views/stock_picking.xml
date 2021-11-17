@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="stock_picking_search" model="ir.ui.view">
+        <field name="name">Stock Picking: group by purchase representative</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+        <field name="arch" type="xml">
+            <group position="inside">
+                <filter
+                    name="group_by_purchase_user"
+                    string="Purchase Representative"
+                    context="{'group_by': 'purchase_user_id'}"
+                    />
+            </group>
+        </field>
+    </record>
+
+</odoo>
