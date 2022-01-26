@@ -14,6 +14,7 @@
         "sale_stock",  # required for testing purchase_consignment_delivery_expense
         "onchange_helper",  # used for testing purchase_consignment
         "product_supplier_info_helpers",
+        "product_supplier_name_search",
         "purchase_consignment",
         "purchase_consignment_delivery_expense",
         "purchase_consignment_inventory",
