@@ -16,6 +16,7 @@ RUN gitoo install-all --conf_file /gitoo.yml --destination "${THIRD_PARTY_ADDONS
 USER odoo
 
 COPY product_supplier_info_helpers /mnt/extra-addons/product_supplier_info_helpers
+COPY product_supplier_name_search /mnt/extra-addons/product_supplier_name_search
 COPY purchase_consignment /mnt/extra-addons/purchase_consignment
 COPY purchase_consignment_delivery_expense /mnt/extra-addons/purchase_consignment_delivery_expense
 COPY purchase_consignment_inventory /mnt/extra-addons/purchase_consignment_inventory
