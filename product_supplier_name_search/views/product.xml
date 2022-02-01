@@ -34,8 +34,8 @@
                         ('default_code','ilike', self),
                         ('name','ilike', self),
                         ('barcode','ilike', self),
-                        ('seller_ids.product_name','ilike', self),
-                        ('seller_ids.product_code','ilike', self),
+                        ('variant_supplier_ids.product_name','ilike', self),
+                        ('variant_supplier_ids.product_code','ilike', self),
                     ]
                 </attribute>
             </field>

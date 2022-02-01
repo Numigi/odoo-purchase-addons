@@ -1,7 +1,7 @@
 # © 2018 Numigi (tm) and all its contributors (https://bit.ly/numigiens)
 # License LGPL-3.0 or later (http://www.gnu.org/licenses/lgpl).
 
-from odoo import api, models
+from odoo import api, fields, models
 from odoo.osv.expression import AND
 from odoo.addons.product_supplier_info_helpers.helpers import get_products_from_supplier_info
 
@@ -9,6 +9,12 @@ from odoo.addons.product_supplier_info_helpers.helpers import get_products_from_
 class ProductProduct(models.Model):
 
     _inherit = "product.product"
+
+    variant_supplier_ids = fields.One2many(
+        "product.supplierinfo",
+        "product_id",
+        "Supplier Prices (Variant)",
+    )
 
     @api.model
     def name_search(self, name="", args=None, operator="ilike", limit=100):
