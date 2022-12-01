@@ -51,7 +51,6 @@ A use case of mapping a supplier price to a product is to trigger business logic
 
         _inherit = 'product.supplier_info'
 
-        @api.multi
         def write(self, vals):
             super().write(vals)
             products = get_products_from_supplier_info(self)

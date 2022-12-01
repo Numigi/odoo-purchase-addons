@@ -1,8 +1,9 @@
-# © 2019 Numigi (tm) and all its contributors (https://bit.ly/numigiens)
+# © 2022 Numigi (tm) and all its contributors (https://bit.ly/numigiens)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from datetime import datetime, timedelta
 from odoo.tests.common import SavepointCase
+from odoo.tests import Form
 
 
 class TestPurchaseOrder(SavepointCase):
@@ -12,7 +13,6 @@ class TestPurchaseOrder(SavepointCase):
         super().setUpClass()
         cls.supplier = cls.env['res.partner'].create({
             'name': 'Supplier',
-            'supplier': True,
         })
 
         cls.product = cls.env['product.product'].create({
@@ -41,15 +41,13 @@ class TestPurchaseOrder(SavepointCase):
     def _process_picking(picking):
         for move_line in picking.mapped('move_lines.move_line_ids'):
             move_line.qty_done = move_line.product_uom_qty
-        picking.action_done()
+        picking.button_validate()
 
     def _return_picking(self, picking):
-        wizard_obj = self.env['stock.return.picking'].with_context(
-            active_ids=[picking.id],
-            active_id=picking.id,
-        )
-        wizard = wizard_obj.create(wizard_obj.default_get(list(wizard_obj._fields)))
-        picking_id, dummy = wizard._create_returns()
+        return_form = Form(
+            self.env['stock.return.picking'].with_context(active_id=picking.id, active_model='stock.picking'))
+        return_wizard = return_form.save()
+        picking_id, pick_type_id = return_wizard._create_returns()
         return_picking = self.env['stock.picking'].browse(picking_id)
         self._process_picking(return_picking)
         return return_picking

@@ -1,4 +1,4 @@
-# © 2019 Numigi (tm) and all its contributors (https://bit.ly/numigiens)
+# © 2022 Numigi (tm) and all its contributors (https://bit.ly/numigiens)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 {
@@ -9,6 +9,6 @@
     'website': "https://bit.ly/numigi-com",
     'licence': "AGPL-3",
     'version': '1.0.0',
-    'depends': ['product'],
+    'depends': ['product', 'base'],
     'installable': True,
 }

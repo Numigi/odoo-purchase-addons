@@ -54,16 +54,26 @@ class TestProductTemplate(SavepointCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.variant_1 = cls.env['product.product'].create({
-            'name': 'Variant 1',
-            'type': 'product',
+        product_attribute = cls.env['product.attribute'].create({'name': 'Size'})
+        size_value_l = cls.env['product.attribute.value'].create([{
+            'name': 'L',
+            'attribute_id': product_attribute.id,
+        }])
+        size_value_s = cls.env['product.attribute.value'].create([{
+            'name': 'S',
+            'attribute_id': product_attribute.id,
+        }])
+
+        cls.template = cls.env['product.template'].create({
+            'name': 'Product Template A',
         })
-        cls.template = cls.variant_1.product_tmpl_id
-        cls.variant_2 = cls.env['product.product'].create({
-            'name': 'Variant 1',
-            'type': 'product',
+        ptal = cls.env['product.template.attribute.line'].create({
+            'attribute_id': product_attribute.id,
             'product_tmpl_id': cls.template.id,
+            'value_ids': [(6, 0, [size_value_s.id, size_value_l.id])],
         })
+        cls.variant_1 = cls.template.product_variant_ids[0]
+        cls.variant_2 = cls.template.product_variant_ids[1]
 
         cls.other_product = cls.env['product.product'].create({
             'name': 'Variant 1',
