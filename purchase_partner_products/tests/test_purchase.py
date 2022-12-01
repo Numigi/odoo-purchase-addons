@@ -14,19 +14,16 @@ class TestPurchaseOrder(SavepointCase):
         super().setUpClass()
         cls.partner_1 = cls.env['res.partner'].create({
             'name': 'My Partner Company 1',
-            'supplier': True,
             'is_company': True,
         })
         cls.contact_1 = cls.env['res.partner'].create({
             'name': 'My Contact 1',
-            'supplier': True,
             'is_company': False,
             'parent_id': cls.partner_1.id,
         })
 
         cls.partner_2 = cls.env['res.partner'].create({
             'name': 'My Partner Company 2',
-            'supplier': True,
             'is_company': True,
         })
 
@@ -35,7 +32,25 @@ class TestPurchaseOrder(SavepointCase):
 
         cls.product_1 = cls.env['product.product'].create(cls._get_product_vals(cls.partner_1))
         cls.product_2 = cls.env['product.product'].create(cls._get_product_vals(cls.partner_2))
+       #############################33
+        product_attribute = cls.env['product.attribute'].create({'name': 'Size'})
+        size_value_l = cls.env['product.attribute.value'].create([{
+            'name': 'L',
+            'attribute_id': product_attribute.id,
+        }])
+        size_value_s = cls.env['product.attribute.value'].create([{
+            'name': 'S',
+            'attribute_id': product_attribute.id,
+        }])
 
+        cls.template_a = cls.env['product.template'].create(cls._get_product_vals(cls.partner_1))
+        ptal = cls.env['product.template.attribute.line'].create({
+            'attribute_id': product_attribute.id,
+            'product_tmpl_id': cls.template_a.id,
+            'value_ids': [(6, 0, [size_value_s.id, size_value_l.id])],
+        })
+        cls.variant_a1 = cls.template_a.product_variant_ids[0]
+        cls.variant_a2 = cls.template_a.product_variant_ids[1]
         cls.order = cls.env['purchase.order'].create({
             'partner_id': cls.partner_1.id,
             'order_line': [],
@@ -93,19 +108,16 @@ class TestPurchaseOrder(SavepointCase):
     def test_if_partner_defined_on_variant__error_raised(self):
         template = self.product_1.product_tmpl_id
 
-        self.product_1.copy({'product_tmpl_id': template.id})
+        product_2 = self.product_1.copy()
+        product_2.product_tmpl_id = template.id
         template.seller_ids.product_id = self.product_1
 
         self.order.write({'order_line': [(0, 0, self._get_po_line_vals(self.product_1))]})
         self.confirm_order()
 
     def test_if_partner_defined_on_other_variant__error_raised(self):
-        template = self.product_1.product_tmpl_id
-
-        other_variant = self.product_1.copy({'product_tmpl_id': template.id})
-        template.seller_ids.product_id = other_variant
-
-        self.order.write({'order_line': [(0, 0, self._get_po_line_vals(self.product_1))]})
-
+        self.variant_a2.seller_ids = [(5, 0, 0)]
+        self.variant_a2.seller_ids = [(1, 0, {'name': self.partner_2.id})]
+        self.order.write({'order_line': [(0, 0, self._get_po_line_vals(self.variant_a1))]})
         with pytest.raises(ValidationError):
             self.confirm_order()

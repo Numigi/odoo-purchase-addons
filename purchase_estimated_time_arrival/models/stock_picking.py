@@ -8,8 +8,8 @@ class StockPicking(models.Model):
 
     _inherit = "stock.picking"
 
-    def action_done(self):
-        res = super().action_done()
+    def button_validate(self):
+        res = super().button_validate()
 
         purchase_receipt_moves = self.mapped('move_lines').filtered(
             lambda m: m.purchase_line_id and m.location_id.usage == 'supplier'

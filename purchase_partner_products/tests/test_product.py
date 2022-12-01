@@ -12,19 +12,16 @@ class TestProduct(SavepointCase):
         super().setUpClass()
         cls.partner_1 = cls.env['res.partner'].create({
             'name': 'My Partner Company 1',
-            'supplier': True,
             'is_company': True,
         })
         cls.contact_1 = cls.env['res.partner'].create({
             'name': 'My Contact 1',
-            'supplier': True,
             'is_company': False,
             'parent_id': cls.partner_1.id,
         })
 
         cls.partner_2 = cls.env['res.partner'].create({
             'name': 'My Partner Company 2',
-            'supplier': True,
             'is_company': True,
         })
 

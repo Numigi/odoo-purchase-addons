@@ -24,7 +24,6 @@ class PurchaseOrder(models.Model):
         for line in self.order_line:
             supplier_info = get_supplier_info_from_product(line.product_id)
             authorized_suppliers = supplier_info.mapped('name.commercial_partner_id')
-
             if expected_supplier not in authorized_suppliers:
                 raise exceptions.ValidationError(_(
                     "The product {product} is not allowed for the supplier {supplier}.\n"
