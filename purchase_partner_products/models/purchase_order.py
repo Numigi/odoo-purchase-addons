@@ -34,7 +34,6 @@ class PurchaseOrder(models.Model):
                     supplier=expected_supplier.display_name,
                 ))
 
-    @api.multi
     def button_confirm(self):
         constraint_should_be_executed = (
             not is_testing() or self._context.get('force_apply_purchase_partner_products')
