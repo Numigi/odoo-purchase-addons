@@ -26,6 +26,13 @@ a blocking error message is displayed.
 
 .. image:: static/description/purchase_order_error_message.png
 
+Compatibility Constraint
+------------------------
+This module is not compatible with the purchase_product_matrix module.
+The purchase_product_matrix hide the field product_id used by purchase_partner_product to filter product
+and replace t with a new field : product_template_id
+Link : https://github.com/odoo/odoo/blob/14.0/addons/purchase_product_matrix/views/purchase_views.xml
+
 Contributors
 ------------
 * Numigi (tm) and all its contributors (https://bit.ly/numigiens)
