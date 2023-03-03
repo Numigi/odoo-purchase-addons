@@ -29,6 +29,7 @@
         "stock_orderpoint_editable_list",
         "stock_picking_groupby_purchase_user",
         "stock_picking_supplier_reference",
+        "purchase_sale_inter_company_description_line",
     ],
     "installable": True,
 }
