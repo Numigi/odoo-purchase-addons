@@ -1,0 +1,38 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#	* service_to_purchase_multico
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-03-03 21:28+0000\n"
+"PO-Revision-Date: 2023-03-03 21:28+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: service_to_purchase_multico
+#: model:ir.model.fields,help:service_to_purchase_multico.field_product_product__service_to_purchase
+#: model:ir.model.fields,help:service_to_purchase_multico.field_product_template__service_to_purchase
+msgid "If ticked, each time you sell this product through a SO, a RfQ is automatically created to buy the product. Tip: don't forget to set a vendor on the product."
+msgstr "Si coché, à chaque fois que vous vendez cet article via un devis, une demande de prix est automatiquement créée pour acheter cet article. Conseil: n'oubliez pas d'indiquer un fournisseur sur l'article."
+
+#. module: service_to_purchase_multico
+#: model:ir.model,name:service_to_purchase_multico.model_product_template
+msgid "Product Template"
+msgstr "Modèle d'article"
+
+#. module: service_to_purchase_multico
+#: model:ir.model.fields,field_description:service_to_purchase_multico.field_product_product__service_to_purchase
+#: model:ir.model.fields,field_description:service_to_purchase_multico.field_product_template__service_to_purchase
+msgid "Purchase Automatically"
+msgstr "Acheter Automatiquement"
+
+#. module: service_to_purchase_multico
+#: model:ir.model,name:service_to_purchase_multico.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Ligne de bons de commande"
