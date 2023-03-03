@@ -297,7 +297,7 @@ class TestPurchaseSaleInterCompanyDescriptionLine(common.SavepointCase):
 
         # Checking product/description from PO to SO
         # on order line that it was kept
-        for index in len(sales.order_line):
+        for index in range(len(sales.order_line)):
             self.assertEquals(
                 sales.order_line[index].product_id,
                 self.purchase_company_a.order_line[index].product_id,
