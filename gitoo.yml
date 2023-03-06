@@ -15,4 +15,4 @@
 
 - url: https://github.com/oca/multi-company
   branch: "12.0"
-  includes: ["purchase_sale_inter_company"]
+  includes: ["purchase_sale_inter_company", "account_invoice_inter_company"]
