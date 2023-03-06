@@ -28,6 +28,7 @@ COPY purchase_origin_always_visible /mnt/extra-addons/purchase_origin_always_vis
 COPY purchase_partner_products /mnt/extra-addons/purchase_partner_products
 COPY purchase_sale_inter_company_description /mnt/extra-addons/purchase_sale_inter_company_description
 COPY purchase_warning_minimum_amount /mnt/extra-addons/purchase_warning_minimum_amount
+COPY service_to_purchase_multico /mnt/extra-addons/service_to_purchase_multico
 COPY stock_block_auto_purchase_order /mnt/extra-addons/stock_block_auto_purchase_order
 COPY stock_orderpoint_editable_list /mnt/extra-addons/stock_orderpoint_editable_list
 COPY stock_picking_groupby_purchase_user /mnt/extra-addons/stock_picking_groupby_purchase_user
