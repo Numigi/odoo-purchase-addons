@@ -24,6 +24,7 @@
         "purchase_line_editable_list",
         "purchase_origin_always_visible",
         "purchase_partner_products",
+        "purchase_sale_inter_company_description",
         "purchase_warning_minimum_amount",
         "stock_block_auto_purchase_order",
         "stock_orderpoint_editable_list",
