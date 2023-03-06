@@ -7,7 +7,7 @@ Dependencies
 ------------
 
 Depends on OCA Module : ``purchase_sale_inter_company``
-
+Available on : https://github.com/OCA/multi-company/tree/12.0/purchase_sale_inter_company
 
 Description
 -----------
