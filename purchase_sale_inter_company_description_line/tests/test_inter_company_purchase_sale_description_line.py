@@ -15,12 +15,15 @@ class TestPurchaseSaleInterCompanyDescriptionLine(common.SavepointCase):
             ----------------------
         """
         # Define groups
-        grp_account_manager_id = cls.env.ref("account.group_account_manager").id
+        grp_account_manager_id = cls.env.ref(
+            "account.group_account_manager").id
         grp_partner_manager_id = cls.env.ref("base.group_partner_manager").id
         grp_sale_manager_id = cls.env.ref("sales_team.group_sale_manager").id
-        grp_purchase_manager_id = cls.env.ref("purchase.group_purchase_manager").id
+        grp_purchase_manager_id = cls.env.ref(
+            "purchase.group_purchase_manager").id
         grp_system_id = cls.env.ref("base.group_system").id
         grp_multi_company_id = cls.env.ref("base.group_multi_company").id
+        grp_create_contact_id = cls.env.ref("base.group_partner_manager").id
 
         # Creating users A and B and their groups
         cls.user_a = cls.env["res.users"].create(
@@ -39,6 +42,7 @@ class TestPurchaseSaleInterCompanyDescriptionLine(common.SavepointCase):
                             grp_purchase_manager_id,
                             grp_system_id,
                             grp_multi_company_id,
+                            grp_create_contact_id,
                         ],
                     )
                 ],
@@ -60,6 +64,7 @@ class TestPurchaseSaleInterCompanyDescriptionLine(common.SavepointCase):
                             grp_purchase_manager_id,
                             grp_system_id,
                             grp_multi_company_id,
+                            grp_create_contact_id,
                         ],
                     )
                 ],
@@ -122,6 +127,7 @@ class TestPurchaseSaleInterCompanyDescriptionLine(common.SavepointCase):
                 "name": "Company-A",
                 "warehouse_id": cls.warehouse_company_a.id,
                 "sale_auto_validation": 1,
+                "invoice_auto_validation": 1,
             }
         )
 
@@ -130,7 +136,7 @@ class TestPurchaseSaleInterCompanyDescriptionLine(common.SavepointCase):
             {
                 "name": "Company-B",
                 "warehouse_id": cls.warehouse_company_b.id,
-                "sale_auto_validation": 1,
+                "invoice_auto_validation": 1,
             }
         )
 
@@ -167,6 +173,12 @@ class TestPurchaseSaleInterCompanyDescriptionLine(common.SavepointCase):
         cls.company_b.so_from_po = True
         cls.company_a.so_from_po = True
 
+        # Activate supplier and customer status
+        cls.company_a.partner_id.customer = True
+        cls.company_a.partner_id.supplier = True
+        cls.company_b.partner_id.customer = True
+        cls.company_b.partner_id.supplier = True
+
         cls.warehouse_company_b.refresh()
         cls.location_stock_company_b.refresh()
         cls.location_output_company_b.refresh()
@@ -181,7 +193,8 @@ class TestPurchaseSaleInterCompanyDescriptionLine(common.SavepointCase):
         cls.location_output_company_a.company_id = cls.company_a.id
 
         # Getting sale and purchase manager
-        cls.purchase_manager_gr = cls.env.ref("purchase.group_purchase_manager")
+        cls.purchase_manager_gr = cls.env.ref(
+            "purchase.group_purchase_manager")
         cls.sale_manager_gr = cls.env.ref("sales_team.group_sale_manager")
 
         # Creating an intercompany user and link to each company
@@ -189,6 +202,10 @@ class TestPurchaseSaleInterCompanyDescriptionLine(common.SavepointCase):
         cls.intercompany_user.company_ids |= cls.company_a
         cls.company_b.intercompany_user_id = cls.intercompany_user
         cls.company_a.intercompany_user_id = cls.intercompany_user
+
+        cls.user_b.partner_id.write({
+            "ref_company_ids": [(6, 0, [cls.company_a.id])]
+        })
 
         """
             ---------------------------------
@@ -204,13 +221,27 @@ class TestPurchaseSaleInterCompanyDescriptionLine(common.SavepointCase):
             }
         )
 
+        # Vendor info
+        supplierinfo_vals = {
+            'name': cls.company_b.partner_id.id,
+            'price': 121.0,
+            'min_qty': 1,
+            'company_id': cls.company_a.id
+        }
+
+        cls.supplierinfo = cls.env["product.supplierinfo"].create(
+            supplierinfo_vals)
+
         cls.product_consultant = cls.env["product.product"].create(
             {
                 "name": "Service Multi Company",
                 "uom_id": cls.env.ref("uom.product_uom_hour").id,
                 "uom_po_id": cls.env.ref("uom.product_uom_hour").id,
                 "type": "service",
-                "company_id": False,
+                "list_price": 50,
+                "standard_price": 20,
+                "company_id": cls.company_a.id,
+                "seller_ids": [(6, 0, [cls.supplierinfo.id])],
             }
         )
 
@@ -241,7 +272,7 @@ class TestPurchaseSaleInterCompanyDescriptionLine(common.SavepointCase):
         cls.purchase_company_a = cls.env["purchase.order"].create(
             {
                 "state": "draft",
-                "partner_id": cls.user_b.partner_id.id,
+                "partner_id": cls.company_b.partner_id.id,
                 "company_id": cls.company_a.id,
             }
         )
@@ -262,22 +293,11 @@ class TestPurchaseSaleInterCompanyDescriptionLine(common.SavepointCase):
         cls.purchase_company_a.currency_id = currency_cad
 
     def test_purchase_sale_inter_company_description_line(self):
-        self.user_b.partner_id.write({
-            "ref_company_ids": [(6, 0, [self.company_a.id])]
-            })
-        
-        # TODO: in_type_id value to check
         self.company_a.po_picking_type_id = self.warehouse_company_a.in_type_id.id
-        
+
         # Approve PO to create the SO for company B
         self.purchase_company_a.sudo(self.user_a).button_approve()
         self.purchase_company_a.refresh()
-
-        # TODO : Here we get empty result if we show
-        # the return of button_approve()
-        # Check _inter_company_create_sale_order()
-        # and button_approve() function in purchase_order.py
-        # of `purchase_sale_inter_company` module for further details
 
         # Make sure that user B belongs to company B
         self.user_b.company_id = self.company_b.id
@@ -303,6 +323,6 @@ class TestPurchaseSaleInterCompanyDescriptionLine(common.SavepointCase):
                 self.purchase_company_a.order_line[index].product_id,
             )
             self.assertEquals(
-                sales.order_line[index].description,
-                self.purchase_company_a.order_line[index].description,
+                sales.order_line[index].name,
+                self.purchase_company_a.order_line[index].name,
             )
