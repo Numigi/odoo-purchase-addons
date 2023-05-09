@@ -15,11 +15,11 @@ Usage
 
 As a user with access to the Purchase application, I create a new price request and select an item. I click on the ``Price History`` button.
 
-.. image:: static/description/purchase_order_line_price_history_line.png
+    .. image:: static/description/purchase_order_price_history.png
 
 In the window that appears, I see that a new ``Currency`` column is present.
 
-.. image:: static/description/purchase_order_price_history.png
+    .. image:: static/description/purchase_history_currency.png
 
 Contributors
 ------------
