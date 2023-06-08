@@ -1,10 +1,6 @@
-# -*- coding: utf-8 -*-
-# Part of Odoo. See LICENSE file for full copyright and licensing details.
-import logging
+# © 2023 Numigi (tm) and all its contributors (https://bit.ly/numigiens)
 
 from odoo import api, models
-
-_logger = logging.getLogger(__name__)
 
 
 class SaleOrderLine(models.Model):
