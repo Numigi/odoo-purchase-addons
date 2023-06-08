@@ -1,5 +1,5 @@
 # odoo-purchase-addons
-odoo addons about purchase.
+Odoo addons about purchase.
 
 
 Contributions
