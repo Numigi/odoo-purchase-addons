@@ -3,14 +3,25 @@
     <data> 
         <template id="report_delivery_document" name="Description on delivery document" 
                     inherit_id="stock.report_delivery_document">
-            <xpath expr="//table[hasclass('mt48')]/thead/tr/th[1]" position="after">
+            <!-- in case when o.state!='done -->
+            <xpath expr="//div[hasclass('page')]/table[2]/thead/tr/th[1]" position="after">
                 <th><strong>Description</strong></th>
             </xpath>
-            <xpath expr="//table[hasclass('mt48')]/tbody/tr/td[1]" position="after">
+            <xpath expr="//div[hasclass('page')]/table[2]/tbody/tr/td[1]" position="after">
                 <td>
                     <span t-field="move.purchase_description"/>
                 </td>
             </xpath>
+            <!-- in case when o.move_line_ids and o.state=='done' -->
+            <xpath expr="//div[hasclass('page')]/table[3]/thead/tr/th[1]" position="after">
+                <th><strong>Description</strong></th>
+            </xpath>
+            <xpath expr="//div[hasclass('page')]/table[3]/tbody/tr/td[1]" position="after">
+                <td>
+                    <span t-field="move_line.purchase_description"/>
+                </td>
+            </xpath>
+
         </template>
     </data>
 </odoo>
