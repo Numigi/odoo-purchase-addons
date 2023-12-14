@@ -12,7 +12,6 @@
 - url: https://github.com/Numigi/odoo-partner-addons
   branch: "14.0"
   includes:
-    - partner_affiliate
     - partner_affiliate_extended
 
 - url: https://github.com/OCA/purchase-workflow
