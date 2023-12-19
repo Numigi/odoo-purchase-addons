@@ -9,9 +9,19 @@
 #  includes:
 #    - stock_inventory_line_domain
 
+- url: https://github.com/Numigi/odoo-partner-addons
+  branch: "14.0"
+  includes:
+    - partner_affiliate_extended
+
 - url: https://github.com/OCA/purchase-workflow
   branch: "14.0"
   includes: ["purchase_order_line_price_history"]
+
+- url: https://github.com/oca/partner-contact
+  branch: "14.0"
+  includes:
+    - partner_affiliate
 
 - url: https://github.com/oca/queue
   branch: "14.0"

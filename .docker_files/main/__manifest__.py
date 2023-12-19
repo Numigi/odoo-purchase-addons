@@ -19,6 +19,7 @@
         # "purchase_consignment_delivery_expense",
         # "purchase_consignment_inventory",
         "purchase_estimated_time_arrival",
+        "purchase_order_groupby_parent_affiliate",
         "purchase_order_line_price_history_currency",
         # "purchase_invoice_empty_lines",
         # "purchase_invoice_from_picking",
