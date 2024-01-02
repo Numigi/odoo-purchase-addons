@@ -2,19 +2,19 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 {
-    'name': "Purchase Partner Products",
-    'summary': "Restrict product selection on purchase orders",
-    'author': "Numigi",
-    'maintainer': "Numigi",
-    'website': "https://bit.ly/numigi-com",
-    'licence': "AGPL-3",
-    'version': '1.2.1',
-    'depends': [
-        'purchase',
-        'product_supplier_info_helpers',
+    "name": "Purchase Partner Products",
+    "summary": "Restrict product selection on purchase orders",
+    "author": "Numigi",
+    "maintainer": "Numigi",
+    "website": "https://bit.ly/numigi-com",
+    "licence": "AGPL-3",
+    "version": "1.2.1",
+    "depends": [
+        "purchase",
+        "product_supplier_info_helpers",
     ],
-    'data': [
+    "data": [
         "views/purchase_view.xml",
     ],
-    'installable': True,
+    "installable": True,
 }

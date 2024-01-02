@@ -1,4 +1,3 @@
-
 from odoo.tests import TransactionCase
 
 
@@ -11,8 +10,8 @@ class TestModules(TransactionCase):
 
     def setUp(self):
         super(TestModules, self).setUp()
-        self.modules = self.env['ir.module.module']
+        self.modules = self.env["ir.module.module"]
 
     def test_project_stage_no_quick_create(self):
         """Project Stage No Quick Create is installed."""
-        self.assertTrue(self.modules.search([('name', '=', 'purchase')]))
+        self.assertTrue(self.modules.search([("name", "=", "purchase")]))

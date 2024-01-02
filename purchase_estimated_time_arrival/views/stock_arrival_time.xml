@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
 
     <record id="stock_arrival_time_list_view" model="ir.ui.view">
@@ -6,12 +6,12 @@
         <field name="model">stock.arrival.time</field>
         <field name="arch" type="xml">
             <tree string="Stock Arrival Time" editable="top">
-                <field name="product_tmpl_id" invisible="1"/>
-                <field name="product_id" invisible="1"/>
-                <field name="purchase_order_id"/>
-                <field name="supplier_id"/>
-                <field name="picking_id"/>
-                <field name="days" string="Recorded ETA (days)"/>
+                <field name="product_tmpl_id" invisible="1" />
+                <field name="product_id" invisible="1" />
+                <field name="purchase_order_id" />
+                <field name="supplier_id" />
+                <field name="picking_id" />
+                <field name="days" string="Recorded ETA (days)" />
             </tree>
         </field>
     </record>
@@ -21,13 +21,18 @@
         <field name="model">stock.arrival.time</field>
         <field name="arch" type="xml">
             <search string="Stock Arrival Time">
-                <field name="purchase_order_id"/>
-                <field name="supplier_id"/>
-                <field name="picking_id"/>
-                <field name="product_id"/>
-                <field name="product_tmpl_id"/>
+                <field name="purchase_order_id" />
+                <field name="supplier_id" />
+                <field name="picking_id" />
+                <field name="product_id" />
+                <field name="product_tmpl_id" />
                 <group string="Group By">
-                    <filter name="group_by_supplier_id" string="Supplier" domain="[]" context="{'group_by': 'supplier_id'}"/>
+                    <filter
+            name="group_by_supplier_id"
+            string="Supplier"
+            domain="[]"
+            context="{'group_by': 'supplier_id'}"
+          />
                 </group>
             </search>
         </field>

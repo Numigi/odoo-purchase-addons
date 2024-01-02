@@ -2,49 +2,63 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from odoo.tests.common import SavepointCase
+
 from ..models.product import SUPPLIER_FILTER_CONTEXT_PARAM
 
 
 class TestProduct(SavepointCase):
-
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.partner_1 = cls.env['res.partner'].create({
-            'name': 'My Partner Company 1',
-            'is_company': True,
-        })
-        cls.contact_1 = cls.env['res.partner'].create({
-            'name': 'My Contact 1',
-            'is_company': False,
-            'parent_id': cls.partner_1.id,
-        })
+        cls.partner_1 = cls.env["res.partner"].create(
+            {
+                "name": "My Partner Company 1",
+                "is_company": True,
+            }
+        )
+        cls.contact_1 = cls.env["res.partner"].create(
+            {
+                "name": "My Contact 1",
+                "is_company": False,
+                "parent_id": cls.partner_1.id,
+            }
+        )
 
-        cls.partner_2 = cls.env['res.partner'].create({
-            'name': 'My Partner Company 2',
-            'is_company': True,
-        })
+        cls.partner_2 = cls.env["res.partner"].create(
+            {
+                "name": "My Partner Company 2",
+                "is_company": True,
+            }
+        )
 
-        cls.product_1 = cls.env['product.product'].create(cls._get_product_vals(cls.partner_1))
-        cls.product_2 = cls.env['product.product'].create(cls._get_product_vals(cls.partner_2))
+        cls.product_1 = cls.env["product.product"].create(
+            cls._get_product_vals(cls.partner_1)
+        )
+        cls.product_2 = cls.env["product.product"].create(
+            cls._get_product_vals(cls.partner_2)
+        )
 
     @classmethod
     def _get_product_vals(cls, suppliers):
         return {
-            'name': 'Test',
-            'type': 'consu',
-            'seller_ids': [
-                (0, 0, {'name': p.id}) for p in suppliers
-            ]
+            "name": "Test",
+            "type": "consu",
+            "seller_ids": [(0, 0, {"name": p.id}) for p in suppliers],
         }
 
     def _search_products(self, supplier):
         context = {
             SUPPLIER_FILTER_CONTEXT_PARAM: supplier.id if supplier else None,
         }
-        return self.env['product.product'].with_context(**context).search([
-            ('id', 'in', [self.product_1.id, self.product_2.id]),
-        ])
+        return (
+            self.env["product.product"]
+            .with_context(**context)
+            .search(
+                [
+                    ("id", "in", [self.product_1.id, self.product_2.id]),
+                ]
+            )
+        )
 
     def test_search_product_with_no_supplier(self):
         assert not self._search_products(None)

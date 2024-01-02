@@ -2,60 +2,76 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from datetime import datetime, timedelta
-from odoo.tests.common import SavepointCase
+
 from odoo.tests import Form
+from odoo.tests.common import SavepointCase
 
 
 class TestPurchaseOrder(SavepointCase):
-
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.supplier = cls.env['res.partner'].create({
-            'name': 'Supplier',
-        })
+        cls.supplier = cls.env["res.partner"].create(
+            {
+                "name": "Supplier",
+            }
+        )
 
-        cls.product = cls.env['product.product'].create({
-            'name': 'Product A',
-            'type': 'product',
-        })
+        cls.product = cls.env["product.product"].create(
+            {
+                "name": "Product A",
+                "type": "product",
+            }
+        )
 
-        cls.order = cls.env['purchase.order'].create({
-            'partner_id': cls.supplier.id,
-            'order_line': [(0, 0, {
-                'product_id': cls.product.id,
-                'product_uom': cls.product.uom_id.id,
-                'name': cls.product.name,
-                'product_qty': 1,
-                'price_unit': 100,
+        cls.order = cls.env["purchase.order"].create(
+            {
+                "partner_id": cls.supplier.id,
+                "order_line": [
+                    (
+                        0,
+                        0,
+                        {
+                            "product_id": cls.product.id,
+                            "product_uom": cls.product.uom_id.id,
+                            "name": cls.product.name,
+                            "product_qty": 1,
+                            "price_unit": 100,
+                            # The planned date is not used to compute the ETA.
+                            "date_planned": datetime.now() + timedelta(9999),
+                        },
+                    )
+                ],
+            }
+        )
 
-                # The planned date is not used to compute the ETA.
-                'date_planned': datetime.now() + timedelta(9999),
-            })]
-        })
-
-        cls.order = cls.order.sudo(cls.env.ref('base.user_demo'))
+        cls.order = cls.order.sudo(cls.env.ref("base.user_demo"))
         cls.order_line = cls.order.order_line
 
     @staticmethod
     def _process_picking(picking):
-        for move_line in picking.mapped('move_lines.move_line_ids'):
+        for move_line in picking.mapped("move_lines.move_line_ids"):
             move_line.qty_done = move_line.product_uom_qty
         picking.button_validate()
 
     def _return_picking(self, picking):
         return_form = Form(
-            self.env['stock.return.picking'].with_context(active_id=picking.id, active_model='stock.picking'))
+            self.env["stock.return.picking"].with_context(
+                active_id=picking.id, active_model="stock.picking"
+            )
+        )
         return_wizard = return_form.save()
         picking_id, pick_type_id = return_wizard._create_returns()
-        return_picking = self.env['stock.picking'].browse(picking_id)
+        return_picking = self.env["stock.picking"].browse(picking_id)
         self._process_picking(return_picking)
         return return_picking
 
     def _get_eta_records(self):
-        return self.env['stock.arrival.time'].search([
-            ('product_id', '=', self.product.id),
-        ])
+        return self.env["stock.arrival.time"].search(
+            [
+                ("product_id", "=", self.product.id),
+            ]
+        )
 
     def test_after_picking_processed_one_eta_line_generated(self):
         self.order.button_confirm()

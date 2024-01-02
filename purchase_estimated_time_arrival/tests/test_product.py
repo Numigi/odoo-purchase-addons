@@ -2,33 +2,40 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from datetime import datetime, timedelta
+
 from odoo.tests.common import SavepointCase
+
 from ..models.res_config_settings import ETA_DAYS_PARAMETER_NAME
 
 
 def _generate_eta_entry(product, eta_days, receipt_date=None):
     receipt_date = receipt_date or datetime.now()
-    product.env['stock.arrival.time'].sudo().create({
-        'product_id': product.id,
-        'purchase_date': receipt_date - timedelta(eta_days),
-        'receipt_date': receipt_date,
-    })
+    product.env["stock.arrival.time"].sudo().create(
+        {
+            "product_id": product.id,
+            "purchase_date": receipt_date - timedelta(eta_days),
+            "receipt_date": receipt_date,
+        }
+    )
 
 
 class TestProduct(SavepointCase):
-
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.product = cls.env['product.product'].create({
-            'name': 'Product A',
-            'type': 'product',
-        })
+        cls.product = cls.env["product.product"].create(
+            {
+                "name": "Product A",
+                "type": "product",
+            }
+        )
 
         cls.limit_in_days = 100
-        cls.env['ir.config_parameter'].set_param(ETA_DAYS_PARAMETER_NAME, cls.limit_in_days)
+        cls.env["ir.config_parameter"].set_param(
+            ETA_DAYS_PARAMETER_NAME, cls.limit_in_days
+        )
 
-        cls.product = cls.product.sudo(cls.env.ref('base.user_demo'))
+        cls.product = cls.product.sudo(cls.env.ref("base.user_demo"))
 
     def test_if_no_eta_lines__eta_is_zero(self):
         assert self.product.eta == 0
@@ -50,35 +57,23 @@ class TestProduct(SavepointCase):
 
 
 class TestProductTemplate(SavepointCase):
-
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        product_attribute = cls.env['product.attribute'].create({'name': 'Size'})
-        size_value_l = cls.env['product.attribute.value'].create([{
-            'name': 'L',
-            'attribute_id': product_attribute.id,
-        }])
-        size_value_s = cls.env['product.attribute.value'].create([{
-            'name': 'S',
-            'attribute_id': product_attribute.id,
-        }])
-
-        cls.template = cls.env['product.template'].create({
-            'name': 'Product Template A',
-        })
-        ptal = cls.env['product.template.attribute.line'].create({
-            'attribute_id': product_attribute.id,
-            'product_tmpl_id': cls.template.id,
-            'value_ids': [(6, 0, [size_value_s.id, size_value_l.id])],
-        })
+        cls.template = cls.env["product.template"].create(
+            {
+                "name": "Product Template A",
+            }
+        )
         cls.variant_1 = cls.template.product_variant_ids[0]
         cls.variant_2 = cls.template.product_variant_ids[1]
 
-        cls.other_product = cls.env['product.product'].create({
-            'name': 'Variant 1',
-            'type': 'product',
-        })
+        cls.other_product = cls.env["product.product"].create(
+            {
+                "name": "Variant 1",
+                "type": "product",
+            }
+        )
 
     def test_product_template_eta_is_average_of_variants(self):
         _generate_eta_entry(self.other_product, 50)  # should not impact the result

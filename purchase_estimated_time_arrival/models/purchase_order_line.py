@@ -8,4 +8,4 @@ class PurchaseOrderLine(models.Model):
 
     _inherit = "purchase.order.line"
 
-    product_eta = fields.Float(related='product_id.eta')
+    product_eta = fields.Float(related="product_id.eta")

@@ -10,9 +10,7 @@ class TestProductNameSearch(common.SavepointCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.supplier = cls.env["res.partner"].create(
-            {"name": "Supplier"}
-        )
+        cls.supplier = cls.env["res.partner"].create({"name": "Supplier"})
 
         cls.table = cls.env["product.product"].create(
             {

@@ -2,14 +2,16 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from datetime import datetime, timedelta
-from odoo import fields, models, _
 from typing import Mapping
+
+from odoo import _, fields, models
+
 from .res_config_settings import get_purchase_eta_days
 
 
 def aggregate_average_eta(
-    products: 'product.product',
-    group_by_field: str = 'product_id',
+    products: "product.product",
+    group_by_field: str = "product_id",
 ) -> Mapping[int, float]:
     """Aggregate the average of ETA days for the given products.
 
@@ -20,23 +22,23 @@ def aggregate_average_eta(
     env = products.env
     min_receipt_date = datetime.now() - timedelta(get_purchase_eta_days(env))
     eta_domain = [
-        ('product_id', 'in', products.ids),
-        ('receipt_date', '>=', min_receipt_date),
+        ("product_id", "in", products.ids),
+        ("receipt_date", ">=", min_receipt_date),
     ]
-    eta_data = env['stock.arrival.time'].read_group(
-        eta_domain, [group_by_field, 'days'], [group_by_field]
+    eta_data = env["stock.arrival.time"].read_group(
+        eta_domain, [group_by_field, "days"], [group_by_field]
     )
-    return {r[group_by_field][0]: r['days'] for r in eta_data}
+    return {r[group_by_field][0]: r["days"] for r in eta_data}
 
 
 def _get_eta_details_action(context: dict) -> dict:
     return {
-        'name': _('ETA'),
-        'type': 'ir.actions.act_window',
-        'res_model': 'stock.arrival.time',
-        'view_type': 'form',
-        'view_mode': 'list',
-        'target': 'current',
+        "name": _("ETA"),
+        "type": "ir.actions.act_window",
+        "res_model": "stock.arrival.time",
+        "view_type": "form",
+        "view_mode": "list",
+        "target": "current",
     }
 
 
@@ -44,7 +46,7 @@ class ProductProduct(models.Model):
 
     _inherit = "product.product"
 
-    eta = fields.Float(compute='_compute_eta', string='ETA')
+    eta = fields.Float(compute="_compute_eta", string="ETA")
 
     def _compute_eta(self):
         eta_data_dict = aggregate_average_eta(self)
@@ -54,7 +56,7 @@ class ProductProduct(models.Model):
 
     def action_open_eta_details(self):
         action = _get_eta_details_action(self._context)
-        action['context'] = dict(self._context, search_default_product_id=self.id)
+        action["context"] = dict(self._context, search_default_product_id=self.id)
         return action
 
 
@@ -62,17 +64,17 @@ class ProductTemplate(models.Model):
 
     _inherit = "product.template"
 
-    eta = fields.Float(compute='_compute_eta')
+    eta = fields.Float(compute="_compute_eta")
 
     def _compute_eta(self):
-        variants = self.mapped('product_variant_ids')
-        eta_data_dict = aggregate_average_eta(variants, 'product_tmpl_id')
+        variants = self.mapped("product_variant_ids")
+        eta_data_dict = aggregate_average_eta(variants, "product_tmpl_id")
 
         for product_template in self:
             product_template.eta = eta_data_dict.get(product_template.id, 0)
 
     def action_open_eta_details(self):
         action = _get_eta_details_action(self._context)
-        action['context'] = dict(self._context, search_default_product_tmpl_id=self.id)
-        action['domain'] = [('product_id.active', '=', True)]
+        action["context"] = dict(self._context, search_default_product_tmpl_id=self.id)
+        action["domain"] = [("product_id.active", "=", True)]
         return action

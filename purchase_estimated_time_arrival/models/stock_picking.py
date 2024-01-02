@@ -11,8 +11,8 @@ class StockPicking(models.Model):
     def button_validate(self):
         res = super().button_validate()
 
-        purchase_receipt_moves = self.mapped('move_lines').filtered(
-            lambda m: m.purchase_line_id and m.location_id.usage == 'supplier'
+        purchase_receipt_moves = self.mapped("move_lines").filtered(
+            lambda m: m.purchase_line_id and m.location_id.usage == "supplier"
         )
 
         for line in purchase_receipt_moves:
@@ -26,9 +26,11 @@ class StockMove(models.Model):
     _inherit = "stock.move"
 
     def _generate_arrival_time_entry(self):
-        self.env['stock.arrival.time'].create({
-            'move_id': self.id,
-            'product_id': self.product_id.id,
-            'purchase_date': self.purchase_line_id.order_id.date_order,
-            'receipt_date': self.date,
-        })
+        self.env["stock.arrival.time"].create(
+            {
+                "move_id": self.id,
+                "product_id": self.product_id.id,
+                "purchase_date": self.purchase_line_id.order_id.date_order,
+                "receipt_date": self.date,
+            }
+        )
