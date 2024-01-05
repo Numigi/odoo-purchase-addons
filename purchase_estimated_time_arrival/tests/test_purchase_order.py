@@ -45,7 +45,10 @@ class TestPurchaseOrder(SavepointCase):
 
     def _return_picking(self, picking):
         return_form = Form(
-            self.env['stock.return.picking'].with_context(active_id=picking.id, active_model='stock.picking'))
+            self.env["stock.return.picking"].with_context(
+                active_id=picking.id, active_model="stock.picking"
+            )
+        )
         return_wizard = return_form.save()
         picking_id, pick_type_id = return_wizard._create_returns()
         return_picking = self.env['stock.picking'].browse(picking_id)

@@ -67,7 +67,7 @@ class TestProductTemplate(SavepointCase):
         cls.template = cls.env['product.template'].create({
             'name': 'Product Template A',
         })
-        ptal = cls.env['product.template.attribute.line'].create({
+        cls.env['product.template.attribute.line'].create({
             'attribute_id': product_attribute.id,
             'product_tmpl_id': cls.template.id,
             'value_ids': [(6, 0, [size_value_s.id, size_value_l.id])],
