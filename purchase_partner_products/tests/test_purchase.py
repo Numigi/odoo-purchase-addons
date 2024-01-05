@@ -32,7 +32,6 @@ class TestPurchaseOrder(SavepointCase):
 
         cls.product_1 = cls.env['product.product'].create(cls._get_product_vals(cls.partner_1))
         cls.product_2 = cls.env['product.product'].create(cls._get_product_vals(cls.partner_2))
-       #############################33
         product_attribute = cls.env['product.attribute'].create({'name': 'Size'})
         size_value_l = cls.env['product.attribute.value'].create([{
             'name': 'L',
@@ -43,8 +42,10 @@ class TestPurchaseOrder(SavepointCase):
             'attribute_id': product_attribute.id,
         }])
 
-        cls.template_a = cls.env['product.template'].create(cls._get_product_vals(cls.partner_1))
-        ptal = cls.env['product.template.attribute.line'].create({
+        cls.template_a = cls.env['product.template'].create(
+            cls._get_product_vals(cls.partner_1)
+        )
+        cls.env['product.template.attribute.line'].create({
             'attribute_id': product_attribute.id,
             'product_tmpl_id': cls.template_a.id,
             'value_ids': [(6, 0, [size_value_s.id, size_value_l.id])],

@@ -10,9 +10,8 @@ SUPPLIER_FILTER_DISABLE_CONTEXT_PARAM = 'filter_products_by_supplier__disabled'
 
 
 def _should_apply_supplier_filter(context: dict) -> bool:
-    return (
-        SUPPLIER_FILTER_CONTEXT_PARAM in context and
-        not context.get(SUPPLIER_FILTER_DISABLE_CONTEXT_PARAM)
+    return SUPPLIER_FILTER_CONTEXT_PARAM in context and not context.get(
+        SUPPLIER_FILTER_DISABLE_CONTEXT_PARAM
     )
 
 
