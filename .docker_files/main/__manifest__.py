@@ -17,6 +17,8 @@
         "purchase_order_groupby_parent_affiliate",
         "purchase_order_line_price_history_currency",
         "purchase_partner_products",
+        "purchase_portal_datepicker_overflow",
+        "purchase_reception_date_enhanced",
     ],
     "installable": True,
 }

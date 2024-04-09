@@ -21,6 +21,8 @@ COPY purchase_estimated_time_arrival /mnt/extra-addons/purchase_estimated_time_a
 COPY purchase_order_groupby_parent_affiliate /mnt/extra-addons/purchase_order_groupby_parent_affiliate
 COPY purchase_order_line_price_history_currency /mnt/extra-addons/purchase_order_line_price_history_currency
 COPY purchase_partner_products /mnt/extra-addons/purchase_partner_products
+COPY purchase_portal_datepicker_overflow /mnt/extra-addons/purchase_portal_datepicker_overflow
+COPY purchase_reception_date_enhanced /mnt/extra-addons/purchase_reception_date_enhanced
 
 COPY .docker_files/main /mnt/extra-addons/main
 COPY .docker_files/odoo.conf /etc/odoo
