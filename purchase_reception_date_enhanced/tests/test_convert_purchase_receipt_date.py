@@ -37,8 +37,10 @@ class TestPurchaseOrderUpdate(AccountTestInvoicingCommon):
         updated_dates.append((po.order_line[0], converted_date))
         # Database date is in UTC time
         # When displayed on local browser, it will be converted to the user's timezone
-        # The date will be displayed as 2024-03-27 12:00:00 for the user located in Canada/Eastern
-        # So for that datetime if user is located in Shanghai UTC+8, it will be displayed as 2024-03-28 00:00:00
+        # The date will be displayed as 2024-03-27 12:00:00
+        # for the user located in Canada/Eastern
+        # So for that datetime if user is located in Shanghai UTC+8,
+        # it will be displayed as 2024-03-28 00:00:00
         if updated_dates:
             po._update_date_planned_for_lines(updated_dates)
         self.assertEqual(

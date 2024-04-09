@@ -12,7 +12,7 @@
     "depends": [
         "purchase",
     ],
-    "summary": "Force to show the popup datepicker on purchase web portal outside its container.",
+    "summary": "Displays the datepicker on purchase web portal correctly.",
     "data": [
         "views/portal_templates.xml",
     ],
