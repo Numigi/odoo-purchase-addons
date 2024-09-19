@@ -8,8 +8,7 @@ services:
       - odoo-web-data:/var/lib/odoo
       - ./.log:/var/log/odoo
     ports:
-      - "8069:8069"
-      - "8071:8071"
+      - "8069-8071:8069-8071"
     depends_on:
       - db
     command: odoo
