@@ -1,2 +1,3 @@
 purchase-workflow https://github.com/OCA/purchase-workflow 14.0
 odoo-partner-addons https://github.com/Numigi/odoo-partner-addons 14.0
+
