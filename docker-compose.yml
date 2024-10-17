@@ -4,21 +4,19 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        - GIT_TOKEN=${GIT_TOKEN}
     volumes:
       - odoo-web-data:/var/lib/odoo
       - ./.log:/var/log/odoo
     ports:
-      - "8069:8069"
-      - "8071:8071"
+      - "8069"
+      - "8071"
     depends_on:
       - db
     command: odoo
     environment:
       - LOG_ODOO=/var/log/odoo
   db:
-    image: quay.io/numigi/postgres-odoo:12.2
+    image: quay.io/numigi/postgres-odoo:16.2
     environment:
       - POSTGRES_PASSWORD=odoo
       - POSTGRES_USER=odoo
