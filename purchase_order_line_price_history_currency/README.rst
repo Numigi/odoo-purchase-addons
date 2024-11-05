@@ -1,14 +1,14 @@
 Purchase Order Line Price History Currency
 ==========================================
-This module adds currency to purchase price history.
+This module adds the currency to purchase price history.
 
 .. contents:: Table of Contents
 
 Context
 -------
-In Odoo, buyers need to see an item's purchase price history on other purchase/order requests so that they can negotiate prices well.
+In Odoo, buyers need to see product's purchase price history on other purchases / requests for quotation so that they can negotiate prices well.
 
-The customer uses the <a href="https://github.com/OCA/purchase-workflow/blob/14.0/purchase_order_line_price_history">purchase_order_line_price_history</a> module which allows to consult the purchase history of an item from a purchase line.
+The customer uses the `purchase_order_line_price_history <https://github.com/OCA/purchase-workflow/blob/14.0/purchase_order_line_price_history>`_ module which allows to consult the purchase history of a product from a purchase order line.
 
 Usage
 -----
