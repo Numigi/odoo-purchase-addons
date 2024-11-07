@@ -16,3 +16,8 @@
 - url: https://github.com/oca/multi-company
   branch: "12.0"
   includes: ["purchase_sale_inter_company", "account_invoice_inter_company"]
+
+- url: https://github.com/oca/server-tools
+  branch: "12.0"
+  includes:
+    - base_view_inheritance_extension
