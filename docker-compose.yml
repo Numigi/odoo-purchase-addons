@@ -1,11 +1,8 @@
-version: '3'
 services:
   odoo:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        - GIT_TOKEN=${GIT_TOKEN}
     volumes:
       - odoo-web-data:/var/lib/odoo
       - ./.log:/var/log/odoo
@@ -18,7 +15,7 @@ services:
     environment:
       - LOG_ODOO=/var/log/odoo
   db:
-    image: quay.io/numigi/postgres-odoo:16.0
+    image: postgres:12.0
     environment:
       - POSTGRES_PASSWORD=odoo
       - POSTGRES_USER=odoo
