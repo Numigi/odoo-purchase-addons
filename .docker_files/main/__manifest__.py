@@ -14,6 +14,7 @@
         "product_supplier_info_helpers",
         "product_supplier_name_search",
         "purchase_estimated_time_arrival",
+        "purchase_invoice_ref_stop_propagate",
         "purchase_order_groupby_parent_affiliate",
         "purchase_order_line_price_history_currency",
         "purchase_partner_products",
