@@ -9,6 +9,5 @@ class PurchaseOrder(models.Model):
 
     def _prepare_invoice(self):
         invoice_vals = super()._prepare_invoice()
-        invoice_vals['ref'] = ''
-        invoice_vals['payment_reference'] = ''
+        invoice_vals.update({"ref": "", "payment_reference": ""})
         return invoice_vals
