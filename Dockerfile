@@ -19,6 +19,7 @@ COPY product_supplier_info_helpers /mnt/extra-addons/product_supplier_info_helpe
 COPY product_supplier_name_search /mnt/extra-addons/product_supplier_name_search
 COPY purchase_estimated_time_arrival /mnt/extra-addons/purchase_estimated_time_arrival
 COPY purchase_invoice_ref_stop_propagate /mnt/extra-addons/purchase_invoice_ref_stop_propagate 
+COPY purchase_line_procurement_no_grouping /mnt/extra-addons/purchase_line_procurement_no_grouping 
 COPY purchase_order_groupby_parent_affiliate /mnt/extra-addons/purchase_order_groupby_parent_affiliate
 COPY purchase_order_line_price_history_currency /mnt/extra-addons/purchase_order_line_price_history_currency
 COPY purchase_partner_products /mnt/extra-addons/purchase_partner_products
