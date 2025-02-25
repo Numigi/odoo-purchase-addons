@@ -8,7 +8,7 @@ class PurchaseOrderLine(models.Model):
     _inherit = "purchase.order.line"
 
     group_id = fields.Many2one(
-        "procurement.group", string="Procurement Group", index=True, copy=False
+        "procurement.group", string="Source", index=True, copy=False
     )
 
     @api.model
