@@ -16,7 +16,9 @@
 
 - url: https://github.com/OCA/purchase-workflow
   branch: "14.0"
-  includes: ["purchase_order_line_price_history"]
+  includes: 
+    - purchase_order_line_price_history
+    - purchase_order_qty_change_no_recompute
 
 - url: https://github.com/oca/partner-contact
   branch: "14.0"
