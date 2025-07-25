@@ -35,4 +35,5 @@ Link : https://github.com/odoo/odoo/blob/14.0/addons/purchase_product_matrix/vie
 
 Contributors
 ------------
-* Numigi (tm) and all its contributors (https://bit.ly/numigiens)
+
+The `Numigi <https://numigi.com/r/home>`_ team is the contributor to this project. We help Quebec companies implement Odoo and Konvergo ERP.

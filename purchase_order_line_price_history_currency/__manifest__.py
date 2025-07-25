@@ -1,4 +1,4 @@
-# © 2023 Numigi (tm) and all its contributors (https://bit.ly/numigiens)
+# © Numigi (tm) and all its contributors (https://numigi.com/r/home)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 {
@@ -6,7 +6,7 @@
     'summary': "Add currency to purchase price history",
     'author': "Numigi",
     'maintainer': "Numigi",
-    'website': "https://bit.ly/numigi-com",
+    'website': "https://numigi.com/r/home",
     'licence': "AGPL-3",
     'version': '1.0.0',
     'depends': ['purchase_order_line_price_history'],
