@@ -1,3 +1,6 @@
+# © Numigi (tm) and all its contributors (https://numigi.com/r/home)
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+
 {
     'name': 'Purchase Order Confirmation Wizard',
     'version': '14.0.1.0.0',
@@ -6,7 +9,7 @@
     'description': """
         Purchase Order Confirmation Wizard
 
-        This module adds a confirmation wizard that displays supplier warnings 
+        This module adds a confirmation wizard that displays supplier warnings
         when validating purchase orders.
 
         Key Features :

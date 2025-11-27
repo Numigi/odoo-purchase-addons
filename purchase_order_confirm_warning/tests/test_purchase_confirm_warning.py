@@ -1,4 +1,6 @@
-# -*- coding: utf-8 -*-
+# © Numigi (tm) and all its contributors (https://numigi.com/r/home)
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+
 from odoo.tests import common, tagged
 from odoo.exceptions import UserError
 
@@ -26,7 +28,10 @@ class TestPurchaseConfirmationWizard(common.TransactionCase):
             'name': 'Test Supplier With Warning',
             'supplier_rank': 1,
             'purchase_warn': 'warning',
-            'purchase_warn_msg': 'This supplier requires special attention. Please verify all details before proceeding.'
+            'purchase_warn_msg': (
+                'This supplier requires special attention. '
+                'Please verify all details before proceeding.'
+            )
         })
 
         # Create test supplier without warning
@@ -97,7 +102,10 @@ class TestPurchaseConfirmationWizard(common.TransactionCase):
         # Verify context contains correct data
         self.assertIn('default_warning_message', result['context'])
         self.assertIn('default_purchase_order_id', result['context'])
-        self.assertEqual(result['context']['default_purchase_order_id'], self.po_with_warning.id)
+        self.assertEqual(
+            result['context']['default_purchase_order_id'],
+            self.po_with_warning.id
+        )
 
     def test_03_supplier_without_warning_direct_confirmation(self):
         """
@@ -265,9 +273,6 @@ class TestPurchaseConfirmationWizard(common.TransactionCase):
             'warning_message': 'Test warning',
             'purchase_order_id': self.po_with_warning.id
         })
-
-        # Store initial state
-        initial_state = self.po_with_warning.state
 
         # Execute confirmation (this will trigger the actual confirmation process)
         wizard.action_confirm_validation()

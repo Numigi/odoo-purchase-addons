@@ -1,4 +1,7 @@
-from odoo import models, api, _
+# © Numigi (tm) and all its contributors (https://numigi.com/r/home)
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
+
+from odoo import models, _
 
 
 class PurchaseOrder(models.Model):
@@ -21,9 +24,9 @@ class PurchaseOrder(models.Model):
             supplier = order.partner_id
 
             # Check if supplier has a warning message configured
-            if (supplier.purchase_warn == 'warning' and
-                    supplier.purchase_warn_msg and
-                    not self.env.context.get('suppress_supplier_warning')):
+            if (supplier.purchase_warn == 'warning'
+                    and supplier.purchase_warn_msg
+                    and not self.env.context.get('suppress_supplier_warning')):
                 # Open confirmation wizard with supplier warning
                 return self._open_confirmation_wizard(order, supplier)
 
@@ -53,7 +56,9 @@ class PurchaseOrder(models.Model):
             'type': 'ir.actions.act_window',
             'res_model': 'purchase.confirmation.wizard',
             'view_mode': 'form',
-            'view_id': self.env.ref('purchase_order_confirm_warning.confirmation_wizard_view_form').id,
+            'view_id': self.env.ref(
+                'purchase_order_confirm_warning.confirmation_wizard_view_form'
+            ).id,
             'target': 'new',
             'context': {
                 'default_warning_message': formatted_message,
