@@ -13,7 +13,6 @@ class PurchaseConfirmationWizard(models.TransientModel):
     _name = 'purchase.confirmation.wizard'
     _description = 'Purchase Order Confirmation Wizard with Supplier Warning'
 
-    # Fields
     warning_message = fields.Text(
         string='Warning Message',
         readonly=True,

@@ -38,7 +38,7 @@ class TestPurchaseConfirmationWizard(common.TransactionCase):
         self.supplier_without_warning = self.Partner.create({
             'name': 'Test Supplier Without Warning',
             'supplier_rank': 1,
-            'purchase_warn': 'none',
+            'purchase_warn': 'no-message',  # Fixed: changed 'none' to 'no-message'
             'purchase_warn_msg': False
         })
 
