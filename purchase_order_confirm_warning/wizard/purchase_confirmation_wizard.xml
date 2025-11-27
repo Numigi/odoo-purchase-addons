@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Wizard Form View -->
+    <record id="confirmation_wizard_view_form" model="ir.ui.view">
+        <field name="name">purchase.confirmation.wizard.form</field>
+        <field name="model">purchase.confirmation.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Supplier Warning Confirmation">
+                <sheet>
+                    <group>
+                        <!-- Warning Message Display -->
+                        <div class="alert alert-warning" role="alert">
+                            <h4 class="alert-heading">⚠️ Supplier Warning</h4>
+                            <p>
+                                <field name="warning_message" nolabel="1" readonly="1"
+                                       class="font-weight-bold"/>
+                            </p>
+                        </div>
+
+                        <!-- Purchase Order Information -->
+                        <group string="Purchase Order Details" col="2">
+                            <field name="purchase_order_name" readonly="1"/>
+                            <field name="supplier_name" readonly="1"/>
+                            <field name="purchase_order_id" invisible="1" readonly="1"/>
+                        </group>
+                    </group>
+                </sheet>
+
+                <!-- Action Buttons -->
+                <footer>
+                    <!-- Confirm Button - Proceed with validation -->
+                    <button name="action_confirm_validation"
+                            string="Confirm Purchase Order"
+                            type="object"
+                            class="btn-primary"
+                            attrs="{'invisible': [('purchase_order_id', '=', False)]}"/>
+
+                    <!-- Cancel Button - Close wizard without validation -->
+                    <button name="action_cancel_validation"
+                            string="Cancel"
+                            type="object"
+                            class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <!-- Action for Wizard -->
+    <act_window id="action_purchase_confirmation_wizard"
+                name="Supplier Warning Confirmation"
+                res_model="purchase.confirmation.wizard"
+                view_mode="form"
+                target="new"
+                binding_model="purchase.order"/>
+</odoo>
