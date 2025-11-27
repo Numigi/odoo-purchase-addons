@@ -16,6 +16,7 @@
         "purchase_estimated_time_arrival",
         "purchase_invoice_ref_stop_propagate",
         "purchase_line_procurement_no_grouping",
+        "purchase_order_confirm_warning",
         "purchase_order_groupby_parent_affiliate",
         "purchase_order_line_price_history_currency",
         "purchase_partner_products",
