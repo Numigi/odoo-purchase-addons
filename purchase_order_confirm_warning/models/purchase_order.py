@@ -2,6 +2,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 from odoo import models, _
+from odoo.exceptions import UserError
 
 
 class PurchaseOrder(models.Model):
@@ -22,6 +23,10 @@ class PurchaseOrder(models.Model):
         # Check for supplier warnings on each purchase order
         for order in self:
             supplier = order.partner_id
+
+            # Check if supplier has a blocking warning
+            if supplier.purchase_warn == 'block' and supplier.purchase_warn_msg:
+                raise UserError(supplier.purchase_warn_msg)
 
             # Check if supplier has a warning message configured
             if (supplier.purchase_warn == 'warning'

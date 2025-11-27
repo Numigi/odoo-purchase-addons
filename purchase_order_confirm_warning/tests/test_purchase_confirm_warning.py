@@ -1,6 +1,7 @@
 # © Numigi (tm) and all its contributors (https://numigi.com/r/home)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
+from unittest.mock import patch
 from odoo.tests import common, tagged
 from odoo.exceptions import UserError
 
@@ -38,7 +39,7 @@ class TestPurchaseConfirmationWizard(common.TransactionCase):
         self.supplier_without_warning = self.Partner.create({
             'name': 'Test Supplier Without Warning',
             'supplier_rank': 1,
-            'purchase_warn': 'no-message',  # Fixed: changed 'none' to 'no-message'
+            'purchase_warn': 'no-message',
             'purchase_warn_msg': False
         })
 
@@ -111,14 +112,12 @@ class TestPurchaseConfirmationWizard(common.TransactionCase):
         """
         Test that button_confirm proceeds directly for supplier without warning
         """
-        # Mock the super method to track if it's called
-        original_state = self.po_without_warning.state
         result = self.po_without_warning.button_confirm()
 
-        # Should return super() result (could be True or action dict)
+        # Should return super() result (typically True)
         self.assertIsNotNone(result)
-        # PO should remain in draft until fully processed
-        self.assertEqual(self.po_without_warning.state, original_state)
+        # PO should be confirmed (state changes to purchase)
+        self.assertEqual(self.po_without_warning.state, 'purchase')
 
     def test_04_wizard_confirm_action(self):
         """
@@ -131,12 +130,22 @@ class TestPurchaseConfirmationWizard(common.TransactionCase):
         })
 
         # Mock the button_confirm to verify it's called with correct context
-        with common.mock_calls() as mock_calls:
+        PurchaseOrderCls = type(self.env['purchase.order'])
+        with patch.object(
+            PurchaseOrderCls, 'button_confirm', autospec=True
+        ) as mock_confirm:
+            mock_confirm.return_value = True
+
             wizard.action_confirm_validation()
 
-            # Verify button_confirm was called with bypass context
-            self.assertTrue(mock_calls.called)
-            # In real implementation, this would verify the context
+            # Verify button_confirm was called
+            self.assertTrue(mock_confirm.called)
+
+            # Verify the context in the call arguments
+            # args[0] is self (the purchase order record)
+            args, _ = mock_confirm.call_args
+            called_po = args[0]
+            self.assertTrue(called_po.env.context.get('bypass_supplier_warning'))
 
     def test_05_wizard_cancel_action(self):
         """
@@ -161,8 +170,13 @@ class TestPurchaseConfirmationWizard(common.TransactionCase):
             bypass_supplier_warning=True
         ).button_confirm()
 
-        # Should proceed with normal confirmation, not return wizard action
-        self.assertNotEqual(result.get('res_model'), 'purchase.confirmation.wizard')
+        # Should proceed with normal confirmation (return True/False),
+        # not return wizard action dict
+        if isinstance(result, dict):
+            self.assertNotEqual(result.get('res_model'), 'purchase.confirmation.wizard')
+        else:
+            # If it's not a dict, it's a successful boolean return, which is correct
+            self.assertTrue(True)
 
     def test_07_suppress_supplier_warning_context(self):
         """
@@ -172,8 +186,13 @@ class TestPurchaseConfirmationWizard(common.TransactionCase):
             suppress_supplier_warning=True
         ).button_confirm()
 
-        # Should proceed with normal confirmation, not return wizard action
-        self.assertNotEqual(result.get('res_model'), 'purchase.confirmation.wizard')
+        # Should proceed with normal confirmation (return True/False),
+        # not return wizard action dict
+        if isinstance(result, dict):
+            self.assertNotEqual(result.get('res_model'), 'purchase.confirmation.wizard')
+        else:
+            # If it's not a dict, it's a successful boolean return, which is correct
+            self.assertTrue(True)
 
     def test_08_warning_message_formatting(self):
         """
@@ -223,7 +242,7 @@ class TestPurchaseConfirmationWizard(common.TransactionCase):
             'name': 'Blocking Supplier',
             'supplier_rank': 1,
             'purchase_warn': 'block',
-            'purchase_warn_msg': 'This supplier is blocked. Cannot proceed with purchase.'
+            'purchase_warn_msg': 'This supplier is blocked. Cannot proceed.'
         })
 
         blocking_po = self.PurchaseOrder.create({
@@ -278,7 +297,7 @@ class TestPurchaseConfirmationWizard(common.TransactionCase):
         wizard.action_confirm_validation()
 
         # The state should change from 'draft' to 'purchase' after confirmation
-        # Note: In test environment, might need to manually check the workflow
+        self.assertEqual(self.po_with_warning.state, 'purchase')
 
     def test_13_wizard_without_purchase_order(self):
         """
@@ -295,7 +314,7 @@ class TestPurchaseConfirmationWizard(common.TransactionCase):
 
         # Confirm action should handle missing PO gracefully
         result = wizard.action_confirm_validation()
-        # Should not raise error, but may return None or empty result
+        # Should not raise error
 
     def test_14_special_characters_in_warning_message(self):
         """
