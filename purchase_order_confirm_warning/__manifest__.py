@@ -9,7 +9,7 @@
         This module adds a confirmation wizard that displays supplier warnings 
         when validating purchase orders.
 
-        Key Features:
+        Key Features :
         - Displays supplier warning messages during purchase order validation
         - Provides explicit user confirmation for orders with supplier warnings
         - Non-blocking interface that allows users to proceed or cancel validation
