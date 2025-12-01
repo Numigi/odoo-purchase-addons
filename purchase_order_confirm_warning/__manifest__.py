@@ -3,7 +3,7 @@
 
 {
     'name': 'Purchase Order Confirmation Supplier Warning',
-    'version': '14.0.1.0.0',
+    'version': '14.0.1.0.1',
     'category': 'Purchases',
     'Author'
     'summary': 'Confirmation wizard with supplier warnings for purchase order validation',
