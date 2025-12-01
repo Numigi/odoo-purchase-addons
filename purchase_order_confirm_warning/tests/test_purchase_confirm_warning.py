@@ -82,7 +82,7 @@ class TestPurchaseConfirmationWizard(common.TransactionCase):
             'purchase_order_id': self.po_with_warning.id
         })
         self.assertEqual(wizard.warning_message, 'Test warning message')
-        self.assertEqual(wizard.purchase_order_id, self.po_with_warning.id)
+        self.assertEqual(wizard.purchase_order_id.id, self.po_with_warning.id)
 
     def test_02_supplier_with_warning_triggers_wizard(self):
         """
