@@ -8,48 +8,27 @@
             <form string="Supplier Warning Confirmation">
                 <sheet>
                     <group>
-                        <!-- Warning Message Display -->
                         <div class="alert alert-warning" role="alert">
-                            <h4 class="alert-heading">⚠️ Supplier Warning</h4>
                             <p>
                                 <field name="warning_message" nolabel="1" readonly="1"
                                        class="font-weight-bold"/>
                             </p>
                         </div>
-
-                        <!-- Purchase Order Information -->
-                        <group string="Purchase Order Details" col="2">
-                            <field name="purchase_order_name" readonly="1"/>
-                            <field name="supplier_name" readonly="1"/>
-                            <field name="purchase_order_id" invisible="1" readonly="1"/>
-                        </group>
                     </group>
                 </sheet>
 
-                <!-- Action Buttons -->
                 <footer>
-                    <!-- Confirm Button - Proceed with validation -->
                     <button name="action_confirm_validation"
-                            string="Confirm Purchase Order"
+                            string="Confirm"
                             type="object"
-                            class="btn-primary"
-                            attrs="{'invisible': [('purchase_order_id', '=', False)]}"/>
+                            class="btn-primary"/>
 
-                    <!-- Cancel Button - Close wizard without validation -->
-                    <button name="action_cancel_validation"
-                            string="Cancel"
-                            type="object"
-                            class="btn-secondary"/>
+                    <button string="Cancel"
+                            class="btn-default"
+                            special="cancel" />
                 </footer>
             </form>
         </field>
     </record>
 
-    <!-- Action for Wizard -->
-    <act_window id="action_purchase_confirmation_wizard"
-                name="Supplier Warning Confirmation"
-                res_model="purchase.confirmation.wizard"
-                view_mode="form"
-                target="new"
-                binding_model="purchase.order"/>
 </odoo>

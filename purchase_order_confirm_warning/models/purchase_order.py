@@ -1,7 +1,7 @@
 # © Numigi (tm) and all its contributors (https://numigi.com/r/home)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import models, _
+from odoo import models, api, _
 from odoo.exceptions import UserError
 
 
@@ -10,6 +10,10 @@ class PurchaseOrder(models.Model):
     Inherit purchase.order model to add supplier warning validation
     """
     _inherit = 'purchase.order'
+
+    @api.onchange('partner_id')
+    def onchange_partner_id_warning(self):
+        return
 
     def button_confirm(self):
         """
@@ -49,15 +53,11 @@ class PurchaseOrder(models.Model):
         Returns:
             dict: Wizard action to open confirmation dialog
         """
-        # Format the warning message
-        formatted_message = _(
-            "Supplier %s has a warning configured:\n\n%s\n\n"
-            "Do you want to proceed with validating this purchase order?"
-        ) % (supplier.name, supplier.purchase_warn_msg)
-
         # Return wizard action
+        title = _("Warning for %s", supplier.name)
+        message = supplier.purchase_warn_msg
         return {
-            'name': _('Supplier Warning'),
+            'name': title,
             'type': 'ir.actions.act_window',
             'res_model': 'purchase.confirmation.wizard',
             'view_mode': 'form',
@@ -66,7 +66,7 @@ class PurchaseOrder(models.Model):
             ).id,
             'target': 'new',
             'context': {
-                'default_warning_message': formatted_message,
+                'default_warning_message': message,
                 'default_purchase_order_id': purchase_order.id
             }
         }

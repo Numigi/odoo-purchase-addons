@@ -2,9 +2,10 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 {
-    'name': 'Purchase Order Confirmation Wizard',
+    'name': 'Purchase Order Confirmation Supplier Warning',
     'version': '14.0.1.0.0',
     'category': 'Purchases',
+    'Author'
     'summary': 'Confirmation wizard with supplier warnings for purchase order validation',
     'description': """
         Purchase Order Confirmation Wizard
@@ -23,8 +24,8 @@
         a confirmation wizard appears showing the warning message. The user can
         choose to proceed with validation or cancel the operation.
     """,
-    'author': 'Your Company',
-    'website': 'https://www.yourcompany.com',
+    'author': 'Numigi',
+    'website': 'https://www.numigi.com',
     'depends': ['purchase'],
     'data': [
         'security/ir.model.access.csv',
