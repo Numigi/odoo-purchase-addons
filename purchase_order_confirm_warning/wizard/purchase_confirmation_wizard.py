@@ -26,20 +26,6 @@ class PurchaseConfirmationWizard(models.TransientModel):
         help='Purchase order being validated'
     )
 
-    purchase_order_name = fields.Char(
-        string='Order Reference',
-        related='purchase_order_id.name',
-        readonly=True,
-        help='Purchase order reference number'
-    )
-
-    supplier_name = fields.Char(
-        string='Supplier',
-        related='purchase_order_id.partner_id.name',
-        readonly=True,
-        help='Supplier name'
-    )
-
     def action_confirm_validation(self):
         """
         Confirm purchase order validation after user approval
@@ -51,15 +37,3 @@ class PurchaseConfirmationWizard(models.TransientModel):
         return self.purchase_order_id.with_context(
             bypass_supplier_warning=True
         ).button_confirm()
-
-    def action_cancel_validation(self):
-        """
-        Cancel the validation process
-        Simply closes the wizard without confirming the purchase order
-        """
-        self.ensure_one()
-
-        # Return action to close the wizard
-        return {
-            'type': 'ir.actions.act_window_close'
-        }

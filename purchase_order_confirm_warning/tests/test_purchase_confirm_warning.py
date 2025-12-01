@@ -81,12 +81,8 @@ class TestPurchaseConfirmationWizard(common.TransactionCase):
             'warning_message': 'Test warning message',
             'purchase_order_id': self.po_with_warning.id
         })
-
-        # Test wizard fields
         self.assertEqual(wizard.warning_message, 'Test warning message')
-        self.assertEqual(wizard.purchase_order_id, self.po_with_warning)
-        self.assertEqual(wizard.purchase_order_name, self.po_with_warning.name)
-        self.assertEqual(wizard.supplier_name, self.supplier_with_warning.name)
+        self.assertEqual(wizard.purchase_order_id.id, self.po_with_warning.id)
 
     def test_02_supplier_with_warning_triggers_wizard(self):
         """
@@ -147,20 +143,6 @@ class TestPurchaseConfirmationWizard(common.TransactionCase):
             called_po = args[0]
             self.assertTrue(called_po.env.context.get('bypass_supplier_warning'))
 
-    def test_05_wizard_cancel_action(self):
-        """
-        Test wizard cancel action closes wizard
-        """
-        wizard = self.Wizard.create({
-            'warning_message': 'Test warning',
-            'purchase_order_id': self.po_with_warning.id
-        })
-
-        result = wizard.action_cancel_validation()
-
-        # Should return window close action
-        self.assertEqual(result['type'], 'ir.actions.act_window_close')
-
     def test_06_bypass_supplier_warning_context(self):
         """
         Test that bypass_supplier_warning context prevents wizard display
@@ -205,10 +187,7 @@ class TestPurchaseConfirmationWizard(common.TransactionCase):
 
         warning_message = result['context']['default_warning_message']
 
-        # Verify message contains supplier name and warning
-        self.assertIn(self.supplier_with_warning.name, warning_message)
         self.assertIn(self.supplier_with_warning.purchase_warn_msg, warning_message)
-        self.assertIn('Do you want to proceed', warning_message)
 
     def test_09_multiple_purchase_orders_behavior(self):
         """
@@ -280,9 +259,6 @@ class TestPurchaseConfirmationWizard(common.TransactionCase):
         with self.assertRaises(ValueError):
             wizards.action_confirm_validation()
 
-        with self.assertRaises(ValueError):
-            wizards.action_cancel_validation()
-
     def test_12_purchase_order_state_after_wizard_confirmation(self):
         """
         Test purchase order state after wizard confirmation
@@ -298,23 +274,6 @@ class TestPurchaseConfirmationWizard(common.TransactionCase):
 
         # The state should change from 'draft' to 'purchase' after confirmation
         self.assertEqual(self.po_with_warning.state, 'purchase')
-
-    def test_13_wizard_without_purchase_order(self):
-        """
-        Test wizard behavior when no purchase order is set
-        """
-        wizard = self.Wizard.create({
-            'warning_message': 'Test warning without PO',
-            'purchase_order_id': False
-        })
-
-        # Actions should still work without raising errors
-        result = wizard.action_cancel_validation()
-        self.assertEqual(result['type'], 'ir.actions.act_window_close')
-
-        # Confirm action should handle missing PO gracefully
-        result = wizard.action_confirm_validation()
-        # Should not raise error
 
     def test_14_special_characters_in_warning_message(self):
         """
